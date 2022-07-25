@@ -1,50 +1,36 @@
-import { Component, useState } from "react";
+import { useState } from "react";
 
 const Vote = ({ anecdotes, index }) => {
-  // const [votes, setVotes] = useState({
-  // arrayOfVotes: new Uint8Array(anecdotes.length),
-
-  // arrayOfVotes: { 0: 0, 1: 0, 2: 0);
-
-  const [votes, setVotes] = useState({
-    0: 0,
-    1: 0,
-    2: 0,
-    3: 0,
-    4: 0,
-    5: 0,
-    6: 0,
-    7: 0,
-  });
-
-  // console.log(votes);
-  // const points = ;
+  const [votes, setVotes] = useState([0, 0, 0, 0, 0, 0, 0]);
 
   const voteAnecdote = () => {
-    let newArray = { ...votes };
+    let newArray = [...votes];
+    newArray[index] += 1;
 
-    newArray[JSON.stringify(index)] += 1;
     setVotes(newArray);
   };
+
   const anecdoteOfTheDay = (votes) => {
-    // let obj = { a: 4, b: 0.5 , c: 0.35, d: 5 };
-    let arr = Object.values({ votes });
-    // let min = Math.min(...arr);
-    let max = Math.max(...arr);
-    // const max_of_array = Math.max.apply(Math, { votes });
-    console.log(max);
+    const max_of_array = Math.max.apply(Math, votes);
+
+    const index = votes.indexOf(max_of_array);
+
+    return (
+      <div>
+        <p>{anecdotes[index]}</p>
+        <p>has {max_of_array} votes</p>
+      </div>
+    );
   };
+
   return (
     <div>
-      <p>has {votes[index]} votes</p>
-      <button onClick={() => voteAnecdote()}>vote</button>
-      <button
-        onClick={() => {
-          anecdoteOfTheDay(votes);
-        }}
-      >
-        anecdote
+      <button type="button" onClick={() => voteAnecdote()}>
+        vote
       </button>
+      <p>has {votes[index]} votes</p>
+      <h2>Anecdote with most votes</h2>
+      {anecdoteOfTheDay(votes)}
     </div>
   );
 };
@@ -62,29 +48,19 @@ const App = () => {
 
   const [index, setSelected] = useState(0);
 
-  // const [selected, setSelected] = useState({
-  //   // selected: 0,
-  //   // points: new Uint8Array(anecdotes.length),
-  // });
-
   const randomAnecdote = () => {
     const newAnecdote = Math.floor(Math.random() * anecdotes.length);
 
     setSelected(newAnecdote);
-    // console.log(index);
   };
 
   return (
     <div>
       <h2>Anecdote of the day</h2>
       <p>{anecdotes[index]}</p>
-      <br />
-      {/* <p>has {selected} votes</p> */}
-      {/* <button onClick={vote(selected)}>vote</button> */}
-      <h2>Anecdote with most votes</h2>
-      <Vote anecdotes={anecdotes} index={index} />
       <button onClick={randomAnecdote}>next anecdote</button>
-      {/* <p>{anecdoteOfTheDay}</p> */}
+      <br />
+      <Vote anecdotes={anecdotes} index={index} />
     </div>
   );
 };

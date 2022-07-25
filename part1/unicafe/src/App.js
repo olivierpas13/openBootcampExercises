@@ -1,7 +1,5 @@
 import { useState } from "react";
 
-// const TOTAL = (good + neutral + bad);
-
 const StatisticLine = ({ text, value }) => {
   return (
     <tr>
@@ -91,11 +89,9 @@ const App = () => {
   const [good, setGood] = useState(0);
   const [neutral, setNeutral] = useState(0);
   const [bad, setBad] = useState(0);
-  // const [showTest, setShowTest] = useState(false);
 
   const handleClickGood = () => {
     setGood(good + 1);
-    console.log("click");
   };
 
   const handleClickNeutral = () => {
@@ -113,7 +109,6 @@ const App = () => {
         functions={[handleClickGood, handleClickNeutral, handleClickBad]}
       />
       <Statistics good={good} bad={bad} neutral={neutral} />
-      {/* { {showTest && <Statistics good={good} bad={bad} neutral={neutral} />}; */}
     </div>
   );
 };
