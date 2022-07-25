@@ -58,7 +58,7 @@ const App = () => {
     <div>
       <h2>Anecdote of the day</h2>
       <p>{anecdotes[index]}</p>
-      <button onClick={randomAnecdote}>next anecdote</button>
+      <button onClick={() => randomAnecdote()}>next anecdote</button>
       <br />
       <Vote anecdotes={anecdotes} index={index} />
     </div>
