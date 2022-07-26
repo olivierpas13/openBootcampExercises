@@ -1,4 +1,4 @@
 export const Header = ({ course }) => {
   console.log(course);
-  return <h1> {course.name} </h1>;
+  return <h2> {course.name} </h2>;
 };
