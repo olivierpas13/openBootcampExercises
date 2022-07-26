@@ -7,7 +7,6 @@ export const Course = ({ course }) => {
     <div>
       <Header course={course} />
       <Content parts={course.parts} />
-      course component
     </div>
   );
 };

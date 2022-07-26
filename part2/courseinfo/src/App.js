@@ -19,7 +19,7 @@ export const App = () => {
         name: "State of a component",
         exercises: 14,
         id: 3,
-      },
+      }
     ],
   };
 
