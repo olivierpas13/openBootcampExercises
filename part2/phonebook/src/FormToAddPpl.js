@@ -1,3 +1,5 @@
+import { Persons } from "./Persons";
+
 export const FormToAddPpl = ({
   setNewName,
   newName,
@@ -54,17 +56,7 @@ export const FormToAddPpl = ({
         </div>
       </form>
       <h2>Numbers</h2>
-      {filteredNames.length > 0
-        ? filteredNames.map((person) => (
-            <p key={person.id}>
-              {person.name} {person.number}
-            </p>
-          ))
-        : persons.map((person) => (
-            <p key={person.id}>
-              {person.name} {person.number}
-            </p>
-          ))}
+      <Persons persons={persons} filteredNames={filteredNames} />
     </div>
   );
 };
