@@ -11,14 +11,12 @@ export const Filter = ({ countries }) => {
         .match(searchString.toLowerCase());
     });
     setFilteredCountries(results.filter((result) => result));
-    // console.log(filteredCountries);
   };
 
   const handleFilteredCountries = (event) => {
     findCountries(event.target.value, countries);
-    // console.log(event.target.value);
   };
-  // console.log(filteredCountries);
+
   return (
     <div>
       <p>

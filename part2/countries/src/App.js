@@ -11,8 +11,6 @@ function App() {
       setCountries(countriesFetched);
     });
   }, []);
-
-  console.log(countries);
   return (
     <div>
       <Filter countries={countries} />
