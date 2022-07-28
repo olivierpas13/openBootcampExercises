@@ -12,23 +12,14 @@ const App = () => {
   ]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
-  const [filtro, setFilter] = useState("");
-  const [testFilter, setTestFilter] = useState("");
-  // console.log(filteredNames);
   const [filteredNames, setFilteredNames] = useState([]);
-  // console.log(filteredNames);
   return (
     <div>
       <h2>Phonebook</h2>
       <Filter
         setFilteredNames={setFilteredNames}
-        // filtro={filtro}
-        // setFilter={setFilter}
-        // names={persons.map((person) => person.name)}
-        // setPersons={setPersons}
+        filteredNames={filteredNames}
         persons={persons}
-        // testFilter={testFilter}
-        // setTestFilter={setTestFilter}
       />
       <h2>Add a new</h2>
       <FormToAddPpl
@@ -36,8 +27,10 @@ const App = () => {
         newName={newName}
         setNewNumber={setNewNumber}
         newNumber={newNumber}
+        persons={persons}
         setPersons={setPersons}
         filteredNames={filteredNames}
+        setFilteredNames={setFilteredNames}
       />
     </div>
   );

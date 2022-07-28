@@ -1,18 +1,7 @@
-export const Filter = ({
-  filtro,
-  setFilter,
-  names,
-  setPersons,
-  persons,
-  filteredNames,
-  testFilter,
-  setTestFilter,
-  setFilteredNames,
-}) => {
+export const Filter = ({ persons, setFilteredNames }) => {
   const searchInPersons = (searchString, persons) => {
-    const results = persons.map((person) => {
-      console.log(person?.name?.match(searchString));
-      return person?.name?.match(searchString)?.input;
+    const results = persons.filter((person) => {
+      return !!person?.name?.toLowerCase().match(searchString.toLowerCase());
     });
     setFilteredNames(results.filter((result) => result));
   };
