@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Countries } from "./Countries";
 
 export const Filter = ({ countries }) => {
-  const [filteredCountries, setFilteredCountries] = useState("");
+  const [filteredCountries, setFilteredCountries] = useState([]);
 
   const findCountries = (searchString, countries) => {
     const results = countries.filter((country) => {
@@ -11,7 +11,7 @@ export const Filter = ({ countries }) => {
         .match(searchString.toLowerCase());
     });
     setFilteredCountries(results.filter((result) => result));
-    console.log(filteredCountries);
+    // console.log(filteredCountries);
   };
 
   const handleFilteredCountries = (event) => {
@@ -23,8 +23,8 @@ export const Filter = ({ countries }) => {
     <div>
       <p>
         find countries <input type="text" onChange={handleFilteredCountries} />
-        <Countries filteredCountries={filteredCountries} />
       </p>
+      <Countries filteredCountries={filteredCountries} />
     </div>
   );
 };
