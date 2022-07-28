@@ -3,32 +3,31 @@ export const FormToAddPpl = ({
   newName,
   setPersons,
   persons,
-  setNewPhone,
-  newPhone,
-  phones,
-  setPhones,
+  setNewNumber,
+  newNumber,
+  filteredNames,
 }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     const newPerson = {
       name: newName,
-      phone: newPhone,
+      number: newNumber,
     };
 
     let names = persons.map((person) => person.name);
-    console.log(names);
+    // console.log(names);
 
     if (names.includes(newPerson.name)) {
-      alert(`${newPerson.name} is already added to phonebook`);
+      alert(`${newPerson.name} is already added to Phonebook`);
       setNewName("");
-      setNewPhone("");
+      setNewNumber("");
       return;
     }
 
     setPersons(persons.concat(newPerson));
-    // setPhones(phones.concat(newPhone));
+    // setNumbers(Numbers.concat(newNumber));
     setNewName("");
-    setNewPhone("");
+    setNewNumber("");
     // alert({ message });
   };
 
@@ -37,16 +36,19 @@ export const FormToAddPpl = ({
     setNewName(event.target.value);
   };
 
-  const handleChangePhone = (event) => {
-    setNewPhone(event.target.value);
+  const handleChangeNumber = (event) => {
+    setNewNumber(event.target.value);
   };
 
   return (
     <div>
       <form>
         <div>
-          name: <input value={newName} onChange={handleChangeName} />
-          number: <input value={newPhone} onChange={handleChangePhone} />
+          <p>
+            name: <input value={newName} onChange={handleChangeName} />
+            <br />
+            number: <input value={newNumber} onChange={handleChangeNumber} />
+          </p>
         </div>
         <div>
           <button type="submit" onClick={handleSubmit}>
@@ -55,9 +57,10 @@ export const FormToAddPpl = ({
         </div>
       </form>
       <h2>Numbers</h2>
-      {persons.map((person) => (
-        <p key={person.name}>
-          {person.name} {person.phone}
+      {filteredNames.map((person, index) => (
+        <p key={index}>
+          {/* {person.name} {person.number} */}
+          {person}
         </p>
       ))}
     </div>
