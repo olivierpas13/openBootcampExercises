@@ -4,7 +4,6 @@ import axios from "axios";
 const handleError = (error) => {
   if (!!error?.message) {
     console.log({ handledError: error.message });
-    // alert(error.message);
   }
   console.log("default Error");
 };
@@ -19,13 +18,11 @@ export const Weather = ({ country }) => {
         `https://api.openweathermap.org/geo/1.0/direct?q=${country.capital}&limit=1&appid=${process.env.REACT_APP_API_KEY}`
       );
       const { data } = response;
-      //   console.log(data);
       setUbication([data[0].lat, data[0].lon]);
     } catch (error) {
       handleError(error);
     }
   };
-  console.log(ubication);
 
   const fetchWeather = async (ubication) => {
     try {
@@ -39,13 +36,11 @@ export const Weather = ({ country }) => {
           data.weather[0].icon,
           data.wind.speed,
         ]);
-        // setTemperature(climate)
       }
     } catch (error) {
       handleError(error);
     }
   };
-  console.log(temperature);
 
   useEffect(() => {
     fetchUbication(country);

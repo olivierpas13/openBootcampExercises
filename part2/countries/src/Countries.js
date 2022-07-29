@@ -11,7 +11,6 @@ export const Countries = ({ filteredCountries, countries }) => {
   }, [filteredCountries]);
 
   const enableCountry = (e) => {
-    // console.log(e.target.id);
     setSelectedCountry(e.target.id);
     setShowCountry(true);
   };
@@ -20,8 +19,6 @@ export const Countries = ({ filteredCountries, countries }) => {
     const countryToShow = countries.filter(
       (country) => country.name.common === selectedCountry
     );
-    // setSelectedCountry("");
-
     return { ...countryToShow };
   };
 
