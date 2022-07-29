@@ -14,7 +14,7 @@ const App = () => {
       const { data } = response;
       setPersons(data);
     });
-  }, []);
+  }, [persons]);
 
   return (
     <div>

@@ -1,3 +1,4 @@
+import axios from "axios";
 import { Persons } from "./Persons";
 
 export const FormToAddPpl = ({
@@ -17,6 +18,11 @@ export const FormToAddPpl = ({
       number: newNumber,
       id: newId,
     };
+
+    axios
+      .post("http://localhost:3001/persons", newPerson)
+      .then((response) => console.log(response));
+    setPersons((prevPersons) => prevPersons.concat(newPerson));
 
     let names = persons.map((person) => person.name);
 
