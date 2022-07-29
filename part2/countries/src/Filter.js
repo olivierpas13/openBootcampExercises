@@ -22,7 +22,7 @@ export const Filter = ({ countries }) => {
       <p>
         find countries <input type="text" onChange={handleFilteredCountries} />
       </p>
-      <Countries filteredCountries={filteredCountries} />
+      <Countries filteredCountries={filteredCountries} countries={countries} />
     </div>
   );
 };
