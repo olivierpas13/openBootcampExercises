@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { FormToAddPpl } from "./FormToAddPpl";
 import { Filter } from "./Filter";
-import axios from "axios";
+import { getAllPersons } from "./services/persons/getAllPersons";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -10,12 +10,13 @@ const App = () => {
   const [filteredNames, setFilteredNames] = useState([]);
 
   useEffect(() => {
-    axios.get("http://localhost:3001/persons").then((response) => {
-      const { data } = response;
-      setPersons(data);
-    });
-  }, [persons]);
+    getAllPersons().then((persons) => setPersons(persons));
+  }, []);
 
+  // console.log(persons);
+  // console.log(newName);
+  // console.log(newNumberK);
+  console.log(filteredNames);
   return (
     <div>
       <h2>Phonebook</h2>

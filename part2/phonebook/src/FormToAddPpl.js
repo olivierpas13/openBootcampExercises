@@ -1,5 +1,5 @@
-import axios from "axios";
 import { Persons } from "./Persons";
+import { createNewPerson } from "./services/persons/createNewPerson";
 
 export const FormToAddPpl = ({
   setNewName,
@@ -9,20 +9,14 @@ export const FormToAddPpl = ({
   setNewNumber,
   newNumber,
   filteredNames,
+  setFilteredNames,
 }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
-    const newId = persons.length + 1;
     const newPerson = {
       name: newName,
       number: newNumber,
-      id: newId,
     };
-
-    axios
-      .post("http://localhost:3001/persons", newPerson)
-      .then((response) => console.log(response));
-    setPersons((prevPersons) => prevPersons.concat(newPerson));
 
     let names = persons.map((person) => person.name);
 
@@ -32,7 +26,10 @@ export const FormToAddPpl = ({
       setNewNumber("");
       return;
     }
-    setPersons([...persons].concat(newPerson));
+
+    createNewPerson(newPerson).then((person) => {
+      setPersons((prevPerson) => prevPerson.concat(person));
+    });
     setNewName("");
     setNewNumber("");
   };
@@ -62,7 +59,12 @@ export const FormToAddPpl = ({
         </div>
       </form>
       <h2>Numbers</h2>
-      <Persons persons={persons} filteredNames={filteredNames} />
+      <Persons
+        setFilteredNames={setFilteredNames}
+        persons={persons}
+        filteredNames={filteredNames}
+        setPersons={setPersons}
+      />
     </div>
   );
 };
