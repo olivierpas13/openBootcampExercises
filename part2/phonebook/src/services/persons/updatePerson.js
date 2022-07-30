@@ -1,10 +1,12 @@
 import axios from "axios";
 
-export const updatePerson = (id, number, name) => {
-  axios
-    .put(`http://localhost:3001/persons/${id}`, {
-      name: `${name}`,
+export const updatePerson = (id, number) => {
+  return axios
+    .patch(`http://localhost:3001/persons/${id}`, {
       number: `${number}`,
     })
-    .then((response) => console.log(response));
+    .then((response) => {
+      const { data } = response;
+      return data;
+    });
 };

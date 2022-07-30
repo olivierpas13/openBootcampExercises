@@ -13,6 +13,10 @@ export const FormToAddPpl = ({
   newNumber,
   filteredNames,
   setFilteredNames,
+  setCreateEvent,
+  setUpdateEvent,
+  setShowElement,
+  setErrorEvent,
 }) => {
   const [updated, setUpdated] = useState(false);
 
@@ -39,16 +43,30 @@ export const FormToAddPpl = ({
           (person) => person.name === newPerson.name
         );
         const selectedObj = { ...selected };
-        updatePerson(selectedObj[0].id, newPerson.number, newPerson.name);
-        setNewName("");
+        updatePerson(selectedObj[0].id, newPerson.number).catch((error) => {
+          setCreateEvent(false);
+          setUpdateEvent(false);
+          setErrorEvent(true);
+          setShowElement(true);
+        });
+        setNewName(selectedObj[0].name);
         setNewNumber("");
+        setErrorEvent(false);
+        setCreateEvent(false);
+        setUpdateEvent(true);
         setUpdated(true);
+        setShowElement(true);
         return;
       }
     }
     createNewPerson(newPerson).then((person) => {
       setPersons((prevPerson) => prevPerson.concat(person));
     });
+    setUpdateEvent(false);
+    setErrorEvent(false);
+    setCreateEvent(true);
+    setShowElement(true);
+
     setNewName("");
     setNewNumber("");
   };
