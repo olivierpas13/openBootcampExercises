@@ -25,7 +25,7 @@ export const Persons = ({
     }
   };
 
-  console.log(deleted);
+  // console.log(deleted);
   return filteredNames.length > 0
     ? filteredNames.map((person) => (
         <div>

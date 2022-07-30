@@ -13,10 +13,6 @@ const App = () => {
     getAllPersons().then((persons) => setPersons(persons));
   }, []);
 
-  // console.log(persons);
-  // console.log(newName);
-  // console.log(newNumberK);
-  console.log(filteredNames);
   return (
     <div>
       <h2>Phonebook</h2>

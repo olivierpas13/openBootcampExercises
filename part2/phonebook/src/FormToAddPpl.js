@@ -1,5 +1,8 @@
+import { useEffect, useState } from "react";
 import { Persons } from "./Persons";
 import { createNewPerson } from "./services/persons/createNewPerson";
+import { getAllPersons } from "./services/persons/getAllPersons";
+import { updatePerson } from "./services/persons/updatePerson";
 
 export const FormToAddPpl = ({
   setNewName,
@@ -11,6 +14,13 @@ export const FormToAddPpl = ({
   filteredNames,
   setFilteredNames,
 }) => {
+  const [updated, setUpdated] = useState(false);
+
+  useEffect(() => {
+    getAllPersons().then((persons) => setPersons(persons));
+    setUpdated(false);
+  }, [setPersons, setUpdated, updated]);
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const newPerson = {
@@ -19,14 +29,23 @@ export const FormToAddPpl = ({
     };
 
     let names = persons.map((person) => person.name);
-
     if (names.includes(newPerson.name)) {
-      alert(`${newPerson.name} is already added to Phonebook`);
-      setNewName("");
-      setNewNumber("");
-      return;
+      if (
+        window.confirm(
+          `${newPerson.name} is already added to Phonebook, replace the old number with the new one?`
+        )
+      ) {
+        const selected = persons.filter(
+          (person) => person.name === newPerson.name
+        );
+        const selectedObj = { ...selected };
+        updatePerson(selectedObj[0].id, newPerson.number, newPerson.name);
+        setNewName("");
+        setNewNumber("");
+        setUpdated(true);
+        return;
+      }
     }
-
     createNewPerson(newPerson).then((person) => {
       setPersons((prevPerson) => prevPerson.concat(person));
     });
