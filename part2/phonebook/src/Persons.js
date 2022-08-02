@@ -24,8 +24,6 @@ export const Persons = ({
       getAllPersons().then((persons) => setPersons(persons));
     }
   };
-
-  // console.log(deleted);
   return filteredNames.length > 0
     ? filteredNames.map((person) => (
         <div>

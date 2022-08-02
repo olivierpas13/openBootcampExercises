@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect} from "react";
 import { Persons } from "./Persons";
 import { createNewPerson } from "./services/persons/createNewPerson";
 import { getAllPersons } from "./services/persons/getAllPersons";
@@ -13,17 +13,13 @@ export const FormToAddPpl = ({
   newNumber,
   filteredNames,
   setFilteredNames,
-  setCreateEvent,
-  setUpdateEvent,
+  setMessage,
   setShowElement,
-  setErrorEvent,
+  message
 }) => {
-  const [updated, setUpdated] = useState(false);
-
   useEffect(() => {
     getAllPersons().then((persons) => setPersons(persons));
-    setUpdated(false);
-  }, [setPersons, setUpdated, updated]);
+  }, [setPersons, message]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -33,6 +29,10 @@ export const FormToAddPpl = ({
     };
 
     let names = persons.map((person) => person.name);
+    // if(!newPerson){
+    //   alert("ola?")
+    //   return;
+    // }
     if (names.includes(newPerson.name)) {
       if (
         window.confirm(
@@ -43,30 +43,26 @@ export const FormToAddPpl = ({
           (person) => person.name === newPerson.name
         );
         const selectedObj = { ...selected };
-        updatePerson(selectedObj[0].id, newPerson.number).catch((error) => {
-          setCreateEvent(false);
-          setUpdateEvent(false);
-          setErrorEvent(true);
+        updatePerson(selectedObj[0].id, newPerson.number).catch((err) => {
+          if(err.response.data.error.includes("Validation")){
+          setMessage([err.response.data.error, 'error'])
+          return;
+          }
+          setMessage([`Information of ${newName} has already been removed from server`, 'error']);
           setShowElement(true);
         });
-        setNewName(selectedObj[0].name);
+        setMessage([`Updated ${selectedObj[0].name}`, 'message'])
         setNewNumber("");
-        setErrorEvent(false);
-        setCreateEvent(false);
-        setUpdateEvent(true);
-        setUpdated(true);
+        setNewName("");
         setShowElement(true);
         return;
       }
     }
     createNewPerson(newPerson).then((person) => {
       setPersons((prevPerson) => prevPerson.concat(person));
-    });
-    setUpdateEvent(false);
-    setErrorEvent(false);
-    setCreateEvent(true);
+    }).catch(err=> (setMessage([err.response.data.error, 'error'])));
+    setMessage([`Added ${newPerson.name}`, 'message'])
     setShowElement(true);
-
     setNewName("");
     setNewNumber("");
   };
