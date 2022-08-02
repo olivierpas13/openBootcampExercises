@@ -19,6 +19,7 @@ const App = () => {
   useEffect(() => {
     setTimeout(() => {
       setShowElement(false);
+      setMessage([])
     }, 3500);
   }, [showElement]);
 

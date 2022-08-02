@@ -30,7 +30,7 @@ export const FormToAddPpl = ({
 
     let names = persons.map((person) => person.name);
     // if(!newPerson){
-    //   alert("ola?")
+    //   alert("hola?")
     //   return;
     // }
     if (names.includes(newPerson.name)) {
@@ -45,7 +45,7 @@ export const FormToAddPpl = ({
         const selectedObj = { ...selected };
         updatePerson(selectedObj[0].id, newPerson.number).catch((err) => {
           if(err.response.data.error.includes("Validation")){
-          setMessage([err.response.data.error, 'error'])
+            setMessage([err.response.data.error, 'error'])
           return;
           }
           setMessage([`Information of ${newName} has already been removed from server`, 'error']);
@@ -97,6 +97,7 @@ export const FormToAddPpl = ({
         persons={persons}
         filteredNames={filteredNames}
         setPersons={setPersons}
+        message={message}
       />
     </div>
   );
