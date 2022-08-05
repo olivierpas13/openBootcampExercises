@@ -36,7 +36,7 @@ beforeEach(async () => {
   /* eslint-enable */
 });
 
-describe.skip('GET /api/blogs', () => {
+describe('GET /api/blogs', () => {
   test('blogs are returned as a json', async () => {
     await api
       .get('/api/blogs')
@@ -82,6 +82,17 @@ describe('POST /api/blogs', () => {
     const addedBlog = blogs.find((blog) => blog.title === newBlog.title);
 
     expect(addedBlog.likes).toBe(0);
+  });
+
+  test('if the title and url properties are missing from the request data, the backend responds to the request with the status code 400 Bad Request.', async () => {
+    const newBlog = {
+      author: 'Olivier Paspuel',
+    };
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(400);
   });
 });
 
