@@ -6,5 +6,14 @@ const blogSchema = new mongoose.Schema({
   url: String,
   likes: Number,
 });
+/*eslint-disable*/
+blogSchema.set('toJSON', {
+  transform: (document, returnedObject) => {
+    returnedObject.id = document._id.toString();
+    delete returnedObject._id;
+    delete returnedObject.__v;
+  },
+/* eslint-enable */
+});
 
 module.exports = mongoose.model('Blog', blogSchema);

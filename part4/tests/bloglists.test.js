@@ -50,6 +50,16 @@ describe('GET /api/blogs', () => {
       .expect(200);
     expect(response.body).toHaveLength(initialBlogs.length);
   });
+
+  test('unique identifier property of the blog posts is named id', async () => {
+    const response = await api
+      .get('/api/blogs')
+      .expect(200);
+
+    const { body: listOfBlogs } = response;
+
+    expect(listOfBlogs[0].id).toBeDefined();
+  });
 });
 
 afterAll(() => {
