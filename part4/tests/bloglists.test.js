@@ -96,6 +96,78 @@ describe('POST /api/blogs', () => {
   });
 });
 
+describe('DELETE /api/blogs/:id', () => {
+  test('when given a valid id, the blog gets deleted', async () => {
+    const response = await api.get('/api/blogs');
+    const { body: listOfBlogs } = response;
+
+    const blogToBeDeleted = listOfBlogs.find((blog) => blog.title === 'React patterns');
+
+    await api
+      .delete(`/api/blogs/${blogToBeDeleted.id}`)
+      .expect(204);
+
+    const responseAfterDelete = await api.get('/api/blogs');
+    const { body: listOfBlogsAfterDelete } = responseAfterDelete;
+    expect(listOfBlogsAfterDelete).toHaveLength(listOfBlogs.length - 1);
+
+    expect(responseAfterDelete).not.toContain(blogToBeDeleted);
+  });
+
+  test('when given an invalid id, the backend responds with the status code 404', async () => {
+    await api
+      .delete('/api/blogs/123')
+      .expect(404);
+  });
+});
+
+describe('UPDATE/PUT /api/blogs/:id', () => {
+  test('when given a valid id, the blog gets updated', async () => {
+    const response = await api.get('/api/blogs');
+    const { body: listOfBlogs } = response;
+
+    const blogToBeUpdated = {
+      title: listOfBlogs[0].title,
+      author: listOfBlogs[0].author,
+      url: listOfBlogs[0].url,
+      likes: listOfBlogs[0].likes + 13,
+    };
+
+    await api
+      .put(`/api/blogs/${listOfBlogs[0].id}`)
+      .send(blogToBeUpdated)
+      .expect(200);
+
+    const responseAfterUpdate = await api.get('/api/blogs');
+    const { body: listOfBlogsAfterUpdate } = responseAfterUpdate;
+    expect(listOfBlogsAfterUpdate).toHaveLength(listOfBlogs.length);
+    expect(listOfBlogsAfterUpdate).toContainEqual(
+      {
+        id: listOfBlogs[0].id,
+        title: listOfBlogs[0].title,
+        author: listOfBlogs[0].author,
+        url: listOfBlogs[0].url,
+        likes: listOfBlogs[0].likes + 13,
+      },
+    );
+  });
+  test('when given an invalid id, the backend responds with the status code 404', async () => {
+    const response = await api.get('/api/blogs');
+    const { body: listOfBlogs } = response;
+
+    const blogToBeUpdated = {
+      title: listOfBlogs[0].title,
+      author: listOfBlogs[0].author,
+      url: listOfBlogs[0].url,
+      likes: listOfBlogs[0].likes + 13,
+    };
+    await api
+      .put('/api/blogs/123')
+      .send(blogToBeUpdated)
+      .expect(404);
+  });
+});
+
 afterAll(() => {
   mongoose.connection.close();
 });

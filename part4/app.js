@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const config = require('./utils/config');
 
 const blogRouter = require('./controllers/blog');
-// const middleware = require('./utils/middleware');
+const errorHandler = require('./utils/middleware');
 const logger = require('./utils/logger');
 
 const app = express();
@@ -23,5 +23,6 @@ app.use(cors());
 app.use(express.static('build'));
 app.use(express.json());
 app.use('/api/blogs', blogRouter);
+app.use(errorHandler);
 
 module.exports = app;
