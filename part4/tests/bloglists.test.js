@@ -36,7 +36,7 @@ beforeEach(async () => {
   /* eslint-enable */
 });
 
-describe('GET /api/blogs', () => {
+describe.skip('GET /api/blogs', () => {
   test('blogs are returned as a json', async () => {
     await api
       .get('/api/blogs')
@@ -59,6 +59,29 @@ describe('GET /api/blogs', () => {
     const { body: listOfBlogs } = response;
 
     expect(listOfBlogs[0].id).toBeDefined();
+  });
+});
+
+describe('POST /api/blogs', () => {
+  test('if the likes property is missing from the request, it will default to the value 0', async () => {
+    const newBlog = {
+      title: 'Phonebook app',
+      author: 'Olivier Paspuel',
+      url: 'https://phonebookaplicacion.herokuapp.com/',
+    };
+
+    await api
+      .post('/api/blogs')
+      .send(newBlog)
+      .expect(201);
+
+    const response = await api.get('/api/blogs');
+
+    const { body: blogs } = response;
+
+    const addedBlog = blogs.find((blog) => blog.title === newBlog.title);
+
+    expect(addedBlog.likes).toBe(0);
   });
 });
 
