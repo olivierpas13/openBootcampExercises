@@ -1,3 +1,13 @@
+const tokenExtractor = (request, response, next) => {
+  const authorization = request.get('authorization');
+  if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
+    const token = (authorization.substring(7));
+
+    request.token = token;
+  }
+  next();
+};
+
 const errorHandler = (error, request, response, next) => {
   if (error.message === 'ID not found') {
     return response.status(409).send({ error: error.message });
@@ -10,4 +20,7 @@ const errorHandler = (error, request, response, next) => {
   return response.status(500);
 };
 
-module.exports = errorHandler;
+module.exports = {
+  errorHandler,
+  tokenExtractor,
+};
