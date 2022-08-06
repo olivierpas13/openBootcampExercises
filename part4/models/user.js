@@ -1,9 +1,15 @@
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
-  username: String,
+  username: {
+    type: String,
+    unique: 'Username and password required',
+  },
   name: String,
-  passwordHash: String,
+  passwordHash: {
+    type: String,
+    unique: 'Username and password required',
+  },
 });
 
 /*eslint-disable*/
