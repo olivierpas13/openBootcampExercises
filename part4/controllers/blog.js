@@ -33,7 +33,7 @@ blogRouter.post('/', async (request, response, next) => {
     const blog = new Blog(
       {
         title: body.title,
-        author: body.author,
+        author: decodedToken.username,
         url: body.url,
         likes: body.likes,
         user: user._id,
