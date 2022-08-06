@@ -10,6 +10,12 @@ const userSchema = new mongoose.Schema({
     type: String,
     unique: 'Username and password required',
   },
+  blogs: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Blog',
+    },
+  ],
 });
 
 /*eslint-disable*/
