@@ -6,8 +6,7 @@ const config = require('./utils/config');
 const loginRouter = require('./controllers/login');
 const blogRouter = require('./controllers/blog');
 const userRouter = require('./controllers/user');
-const { errorHandler, tokenExtractor } = require('./utils/middleware');
-// const tokenExtractor = require('./utils/middleware');
+const { errorHandler, tokenExtractor, userExtractor } = require('./utils/middleware');
 const logger = require('./utils/logger');
 
 const app = express();
@@ -28,7 +27,7 @@ app.use(express.json());
 app.use(tokenExtractor);
 app.use('/api/login', loginRouter);
 app.use('/api/users', userRouter);
-app.use('/api/blogs', blogRouter);
+app.use('/api/blogs', userExtractor, blogRouter);
 app.use(errorHandler);
 
 module.exports = app;

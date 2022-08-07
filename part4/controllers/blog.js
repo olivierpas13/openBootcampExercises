@@ -1,7 +1,5 @@
 const blogRouter = require('express').Router();
-const jwt = require('jsonwebtoken');
 const Blog = require('../models/blog');
-const User = require('../models/user');
 
 blogRouter.get('/', async (request, response) => {
   const blogs = await Blog.find({}).populate('user', { blogs: 0 });
@@ -12,19 +10,12 @@ blogRouter.post('/', async (request, response, next) => {
   try {
     if (!request.body.likes) { request.body.likes = 0; }
     if (!request.body.title && !request.body.url) { return response.status(400).end(); }
-    const { body } = request;
-
-    const decodedToken = jwt.verify(request.token, process.env.SECRET);
-    if (!decodedToken.id) {
-      return response.status(401).json({ error: 'token missing or invalid' });
-    }
-    const user = await User.findById(decodedToken.id);
-
+    const { body, user } = request;
     /*eslint-disable*/
     const blog = new Blog(
       {
         title: body.title,
-        author: decodedToken.username,
+        author: user.username,
         url: body.url,
         likes: body.likes,
         user: user._id,
@@ -41,39 +32,31 @@ blogRouter.post('/', async (request, response, next) => {
 });
 /* eslint-enable */
 
-blogRouter.delete('/:id', async (request, response) => {
+blogRouter.delete('/:id', async (request, response, next) => {
   try {
     const { id } = request.params;
-    const { token } = request;
-
-    const decodedToken = jwt.verify(token, process.env.SECRET);
-
-    if (!decodedToken.id) {
-      return response.status(401).json({ error: 'token missing or invalid' });
-    }
-    const user = await User.findById(decodedToken.id);
-    // console.log(user);
-
-    if (!(user.blogs.find((blog) => blog._id.toString() === id.toString()))) { return response.status(400).json({ error: 'Not the creatror' }); }
-    // console.log(decodedToken);
-
+    const { user } = request;
+    const blogs = await Blog.find({}).populate('user', { blogs: 0 });
+    /* eslint-disable */
+    if (!(blogs.find((blog) => blog.user._id.toString() === user.id.toString()))) { return response.status(400).json({ error: 'Unauthorized, user is not the creator of the blog' }); }
+    /* eslint-enable */
     await Blog.findByIdAndDelete(id);
-    response.status(204).end();
+    return response.status(204).end();
   } catch (e) {
-    response.status(404).end();
+    return next(e);
   }
 });
 
 blogRouter.put('/:id', async (request, response) => {
   const { id } = request.params;
-  const { body } = request;
+  const { body, user } = request;
 
   if (!body.likes) { body.likes = 0; }
   if (!body.title && !body.url) { return response.status(400).end(); }
 
   const blog = {
     title: body.title,
-    author: body.author,
+    author: user.username,
     url: body.url,
     likes: body.likes,
   };

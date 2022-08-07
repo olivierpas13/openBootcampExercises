@@ -7,21 +7,25 @@ const User = require('../models/user');
 
 const initialUsers = [
   {
-    username: 'sonne7even',
+    username: 'first',
     name: 'Oliv Paspuel',
     password: '0987654321',
   },
   {
-    username: 'sasha',
+    username: 'second',
     name: 'Sol Paspuel',
     password: '098765432',
   },
   {
-    username: 'myBrotherRules',
+    username: 'third',
     name: 'Rob Paspuel',
     password: '09876543',
   },
 ];
+
+beforeAll(async () => {
+  // await User.deleteMany({});
+});
 
 beforeEach(async () => {
   await User.deleteMany({});
@@ -50,7 +54,6 @@ describe('POST /api/users/', () => {
     const response = await api.get('/api/users');
 
     const { body: users } = response;
-
     expect(users).toHaveLength(initialUsers.length);
   });
   test('Invalid user creation if no password is given', async () => {
@@ -93,7 +96,7 @@ describe('POST /api/users/', () => {
   });
   test('Invalid user creation if username already exists', async () => {
     const invalidUser = {
-      username: 'sonne7even',
+      username: 'first',
       name: 'Paspuel',
       password: '0987654321',
     };
@@ -112,6 +115,7 @@ describe('POST /api/users/', () => {
   });
 });
 
-afterAll(() => {
+afterAll(async () => {
+  await User.deleteMany({});
   mongoose.connection.close();
 });
