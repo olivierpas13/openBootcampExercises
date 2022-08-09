@@ -9,7 +9,7 @@ blogRouter.get('/', async (request, response) => {
 blogRouter.post('/', async (request, response, next) => {
   try {
     if (!request.body.likes) { request.body.likes = 0; }
-    if (!request.body.title && !request.body.url) { return response.status(400).end(); }
+    if (!request.body.title || !request.body.url) { return response.status(400).json({ error: 'Title and url required' }).end(); }
     const { body, user } = request;
     /*eslint-disable*/
     const blog = new Blog(
@@ -23,7 +23,7 @@ blogRouter.post('/', async (request, response, next) => {
     );
 
     const savedBlog = await blog.save();
-    user.blogs = user.blogs.concat(savedBlog._id);
+    user.blogs = user.blogs.concat(savedBlog._id);  
     await user.save();
     return response.status(201).json(savedBlog);
   } catch (error) {
