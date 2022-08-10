@@ -17,18 +17,25 @@ const getAll = (user) => {
   return request.then(response => response.data)
 }
 
-const postBlog = async (author, url, title) =>{
+// const postBlog = async (author, url, title) =>{
+const postBlog = async (blogObj) =>{
     const config = {
       headers: { Authorization: token },
     }
   
-    const newBlog = {
-      title: title,
-      author: author,
-      url: url,
-    }
-    await axios.post(baseUrl, newBlog, config)
+    // const newBlog = {
+    //   title: blogObj.title,
+    //   author: blogObj.author,
+    //   url: blogObj.url,
+    // }
+    await axios.post(baseUrl, blogObj, config)
     // console.log(response)
 }
 
-export default { getAll, setToken, postBlog }
+const blogService={
+  setToken,
+  getAll,
+  postBlog,
+}
+
+export default blogService

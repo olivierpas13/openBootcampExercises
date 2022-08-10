@@ -11,9 +11,6 @@ const App = () => {
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('') 
   const [password, setPassword] = useState('')
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
   const [message, setMessage] = useState([])
   const [user, setUser] = useState(null)
 
@@ -70,16 +67,13 @@ const App = () => {
     setUser(null)
   }
 
-  const createBlog = async(event) =>{
-    event.preventDefault()
-
-    
+  const createBlog = async(blogObj) =>{
     try {
-      await blogService.postBlog(author, url, title)
+      await blogService.postBlog(blogObj)
       await blogService.getAll(user).then(blogs =>
         setBlogs( blogs )
       )
-      setMessage(['message', `A new blog ${title} by ${author} added`])
+      setMessage(['message', `A new blog ${blogObj.title} by ${blogObj.author} added`])
       setTimeout(() => {
         setMessage([])
       }, 5000)
@@ -92,7 +86,6 @@ const App = () => {
     }
   }
 
-  console.log(author)
   return (
     <div>
       {!user ?
@@ -120,13 +113,7 @@ const App = () => {
 
       <Togglable buttonLabel='New note'>
         <CreateBlog
-        setAuthor={setAuthor}
-        author={author}
-        setTitle={setTitle}
-        title={title}
-        setUrl={setUrl}
-        url={url}
-        createBlog={createBlog}
+        postBlog={createBlog}
         />
       </Togglable>
       
