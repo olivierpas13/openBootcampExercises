@@ -16,7 +16,6 @@ const App = () => {
   const [user, setUser] = useState(null)
 
   useEffect(() => {
-    console.log('this efect')
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
     )  
@@ -87,6 +86,7 @@ const App = () => {
     }
   }
 
+
   return (
     <div>
       {!user ?
@@ -123,7 +123,8 @@ const App = () => {
       setBlogs={setBlogs}
       />
       {blogs.map(blog =>
-        <Blog 
+        <Blog
+        loggedUser={user.username}
         setBlogs={setBlogs}
         key={blog.id}
         blog={blog}

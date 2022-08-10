@@ -1,13 +1,9 @@
-import { useState } from "react"
-
 const Filter = ({blogs, setBlogs}) =>{
 
-// const [filter, setFilter]= useState(0)
 
 const sortByLessLikes = (e) =>{
     e.preventDefault()
     const newList = blogs.sort((a, b)=> a.likes-b.likes)
-    console.log(newList)
     setBlogs([...newList])
 }
 
@@ -15,7 +11,6 @@ const sortByLessLikes = (e) =>{
 const sortByMostLikes = (e) =>{
     e.preventDefault()
     const newList = blogs.sort((a, b)=> b.likes-a.likes)
-    console.log(newList)
     setBlogs([...newList])
 }
 

@@ -6,10 +6,6 @@ const CreateBlog = ({postBlog}) =>{
     const [author, setAuthor] = useState('')
     const [url, setUrl] = useState('')
 
-console.log(title)
-console.log(author)
-console.log(url)
-
     const addBlog = (e) =>{
         e.preventDefault()
 
