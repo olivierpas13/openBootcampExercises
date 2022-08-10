@@ -16,9 +16,10 @@ const App = () => {
   const [user, setUser] = useState(null)
 
   useEffect(() => {
+    if(user){
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
-    )  
+    )}  
   }, [user])
 
   useEffect(() => {
