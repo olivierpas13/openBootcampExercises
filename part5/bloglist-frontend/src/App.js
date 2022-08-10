@@ -5,6 +5,7 @@ import LoginForm from './components/LoginForm'
 import { Message } from './components/Message'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import Togglable from './components/Togglable'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -96,13 +97,13 @@ const App = () => {
     <div>
       {!user ?
       <div>
-      <LoginForm
-      setUsername={setUsername}
-      setPassword={setPassword}
-      handleLogin={handleLogin}
-      username={username}
-      password={password}
-      />
+        <LoginForm
+        setUsername={setUsername}
+        setPassword={setPassword}
+        handleLogin={handleLogin}
+        username={username}
+        password={password}
+        />
       <Message
       type={message[0]}
       message={message[1]}
@@ -110,21 +111,25 @@ const App = () => {
       </div>
       :
       <div>
-      <CreateBlog
-      setAuthor={setAuthor}
-      author={author}
-      setTitle={setTitle}
-      title={title}
-      setUrl={setUrl}
-      url={url}
-      createBlog={createBlog}
-      />
       <h2>Blogs</h2>
       <Message
       type={message[0]}
       message={message[1]}
       />
       <p>{user.name} logged in <button onClick={e=>handleLogout(e)}>Log out</button></p>
+
+      <Togglable buttonLabel='New note'>
+        <CreateBlog
+        setAuthor={setAuthor}
+        author={author}
+        setTitle={setTitle}
+        title={title}
+        setUrl={setUrl}
+        url={url}
+        createBlog={createBlog}
+        />
+      </Togglable>
+      
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
       )}
