@@ -3,6 +3,7 @@ import Blog from './components/Blog'
 import CreateBlog from './components/CreateBlog'
 import LoginForm from './components/LoginForm'
 import { Message } from './components/Message'
+import Filter from './components/Filter'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import Togglable from './components/Togglable'
@@ -116,7 +117,11 @@ const App = () => {
         postBlog={createBlog}
         />
       </Togglable>
-      
+      <br/>
+      <Filter
+      blogs={blogs}
+      setBlogs={setBlogs}
+      />
       {blogs.map(blog =>
         <Blog 
         setBlogs={setBlogs}

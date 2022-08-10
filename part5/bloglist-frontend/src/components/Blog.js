@@ -4,8 +4,7 @@ import blogService from "../services/blogs"
 const Blog = ({blog, blogs,  setBlogs}) => {
 
 const [visibility, setVisibility] = useState(true)
-const [updated, setUpdated] = useState(false)
-
+// const [updated, setUpdated] = useState(false)
 // useEffect(()=>{
 //   blogService.getAll().then(blogs =>
 //     setBlogs( blogs )
@@ -34,16 +33,17 @@ const updateLikes = async () =>{
     likes: blog.likes + 1
   }
   await blogService.updateBlog(blogObj)
-  const listWhitoutTheUpdatedBlog = blogs.filter(blg => blg.id !== blog.id )
-  const newList = [...listWhitoutTheUpdatedBlog, blogObj]
-  // const newList = blogs
-  // const indexOfElementToReplace = newList.findIndex(blg => blg.id === blog.id )
-  // // console.log(indexOfElementToReplace)
-  // // newList.splice(indexOfElementToReplace, 1,  blogObj)
-  // // console.log(blogs)
-  // setBlogs([...blogs.splice(indexOfElementToReplace, 1,  blogObj)])
-  setBlogs(newList)
-  setUpdated(true)
+
+  // Another way
+
+  // const listWhitoutTheUpdatedBlog = blogs.filter(blg => blg.id !== blog.id )
+  // const newList = [...listWhitoutTheUpdatedBlog, blogObj]
+  
+
+  const newList = blogs
+  const indexOfElementToReplace = newList.findIndex(blg => blg.id === blog.id )
+  newList.splice(indexOfElementToReplace, 1,  blogObj)
+  setBlogs([...newList])
 }
 
 return(
