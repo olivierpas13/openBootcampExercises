@@ -16,7 +16,7 @@ const App = () => {
 
   useEffect(() => {
     console.log('this efect')
-    blogService.getAll(user).then(blogs =>
+    blogService.getAll().then(blogs =>
       setBlogs( blogs )
     )  
   }, [user])
@@ -118,7 +118,12 @@ const App = () => {
       </Togglable>
       
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        <Blog 
+        setBlogs={setBlogs}
+        key={blog.id}
+        blog={blog}
+        blogs={blogs}
+         />
       )}
       </div>
       }

@@ -1,6 +1,18 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import blogService from "../services/blogs"
 
-const Blog = ({blog}) => {
+const Blog = ({blog, blogs,  setBlogs}) => {
+
+const [visibility, setVisibility] = useState(true)
+const [updated, setUpdated] = useState(false)
+
+// useEffect(()=>{
+//   blogService.getAll().then(blogs =>
+//     setBlogs( blogs )
+//   )   
+//   console.log('updated')
+//   setUpdated(false)
+// }, [setBlogs, updated])
 
 const blogStyle = {
     paddingTop: 10,
@@ -11,10 +23,27 @@ const blogStyle = {
     marginTop: 5,
   }
 
-const [visibility, setvisibility] = useState(true)
 
 const toggleVisibility = () =>{
-  setvisibility(!visibility)
+  setVisibility(!visibility)
+}
+
+const updateLikes = async () =>{
+  const blogObj = {
+    ...blog,
+    likes: blog.likes + 1
+  }
+  await blogService.updateBlog(blogObj)
+  const listWhitoutTheUpdatedBlog = blogs.filter(blg => blg.id !== blog.id )
+  const newList = [...listWhitoutTheUpdatedBlog, blogObj]
+  // const newList = blogs
+  // const indexOfElementToReplace = newList.findIndex(blg => blg.id === blog.id )
+  // // console.log(indexOfElementToReplace)
+  // // newList.splice(indexOfElementToReplace, 1,  blogObj)
+  // // console.log(blogs)
+  // setBlogs([...blogs.splice(indexOfElementToReplace, 1,  blogObj)])
+  setBlogs(newList)
+  setUpdated(true)
 }
 
 return(
@@ -28,13 +57,9 @@ return(
       </div>
   :
       <div style={blogStyle}>
-        {/* {blog.title} <button onClick={toggleVisibility}>hide</button>
-        {blog.url}
-        {blog.likes} <button>like</button>
-        {blog.author} */}
         <p>{blog.title} <button onClick={toggleVisibility}>hide</button></p>
         <p>{blog.url}</p>
-        <p>{blog.likes} <button>like</button></p>
+        <p>{blog.likes} <button onClick={updateLikes}>like</button></p>
         <p>{blog.author}</p>
       </div>
     }

@@ -7,7 +7,7 @@ const setToken = newToken => {
   token = `bearer ${newToken}`
 }
 
-const getAll = (user) => {
+const getAll = () => {
 
   const config = {
     headers: { Authorization: token },
@@ -17,22 +17,33 @@ const getAll = (user) => {
   return request.then(response => response.data)
 }
 
-// const postBlog = async (author, url, title) =>{
+const getOne = (id) =>{
+  const config = {
+    headers: { Authorization: token },
+  }
+  const request = axios.get(`${baseUrl}/${id}`, config)
+  return request.then(response => response.data)
+}
+
 const postBlog = async (blogObj) =>{
     const config = {
       headers: { Authorization: token },
     }
-  
-    // const newBlog = {
-    //   title: blogObj.title,
-    //   author: blogObj.author,
-    //   url: blogObj.url,
-    // }
     await axios.post(baseUrl, blogObj, config)
-    // console.log(response)
+}
+
+const updateBlog = async (blogObj)=>{
+  const config = {
+    headers: { Authorization: token },
+  }
+
+  await axios.put(`${baseUrl}/${blogObj.id}`, blogObj, config)
+
 }
 
 const blogService={
+  getOne,
+  updateBlog,
   setToken,
   getAll,
   postBlog,
