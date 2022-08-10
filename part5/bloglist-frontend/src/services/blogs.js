@@ -1,53 +1,53 @@
-import axios from 'axios'
-const baseUrl = '/api/blogs'
+import axios from 'axios';
+const baseUrl = '/api/blogs';
 
-let token = null
+let token = null;
 
 const setToken = newToken => {
-  token = `bearer ${newToken}`
-}
+  token = `bearer ${newToken}`;
+};
 
 const getAll = () => {
 
   const config = {
     headers: { Authorization: token },
-  }
+  };
 
-  const request = axios.get(baseUrl, config)
-  return request.then(response => response.data)
-}
+  const request = axios.get(baseUrl, config);
+  return request.then(response => response.data);
+};
 
-const getOne = (id) =>{
+const getOne = (id) => {
   const config = {
     headers: { Authorization: token },
-  }
-  const request = axios.get(`${baseUrl}/${id}`, config)
-  return request.then(response => response.data)
-}
+  };
+  const request = axios.get(`${baseUrl}/${id}`, config);
+  return request.then(response => response.data);
+};
 
-const postBlog = async (blogObj) =>{
-    const config = {
-      headers: { Authorization: token },
-    }
-    await axios.post(baseUrl, blogObj, config)
-}
-
-const updateBlog = async (blogObj)=>{
+const postBlog = async (blogObj) => {
   const config = {
     headers: { Authorization: token },
-  }
+  };
+  await axios.post(baseUrl, blogObj, config);
+};
 
-  await axios.put(`${baseUrl}/${blogObj.id}`, blogObj, config)
-
-}
-
-const deleteBlog = async (id) =>{
+const updateBlog = async (blogObj) => {
   const config = {
     headers: { Authorization: token },
-  }
-  const request = axios.delete(`${baseUrl}/${id}`, config)
-  return request.then(response => response.data)
-}
+  };
+
+  await axios.put(`${baseUrl}/${blogObj.id}`, blogObj, config);
+
+};
+
+const deleteBlog = async (id) => {
+  const config = {
+    headers: { Authorization: token },
+  };
+  const request = axios.delete(`${baseUrl}/${id}`, config);
+  return request.then(response => response.data);
+};
 
 const blogService={
   getOne,
@@ -56,6 +56,6 @@ const blogService={
   getAll,
   postBlog,
   deleteBlog
-}
+};
 
-export default blogService
+export default blogService;
