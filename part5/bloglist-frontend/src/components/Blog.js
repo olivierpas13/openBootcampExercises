@@ -54,11 +54,11 @@ function Blog({
           <div style={blogStyle}>
             <p>
               {blog.title}
-              {' '}
-              {blog.author}
-              {' '}
-              <button onClick={toggleVisibility}>View</button>
             </p>
+            <p>
+              {blog.author}
+            </p>
+            <button onClick={toggleVisibility}>View</button>
           </div>
         )
         : (
