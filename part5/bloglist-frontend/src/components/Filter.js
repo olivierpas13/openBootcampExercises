@@ -1,26 +1,38 @@
+import { useEffect, useState } from 'react';
+
 const Filter = ({ blogs, setBlogs }) => {
 
+  const [descendingOrder, setDescendingOrder] = useState(true);
 
-  const sortByLessLikes = (e) => {
+  useEffect(() => {
+    if(descendingOrder === true)
+    {const newList1 = blogs.sort((a, b) => b.likes-a.likes);
+      setBlogs([...newList1]);}
+    if(descendingOrder === false)
+    {const newList2 = blogs.sort((a, b) => a.likes-b.likes);
+      setBlogs([...newList2]);}
+    console.log('repetido');
+  }, [descendingOrder]);
+
+
+  const changeOrder = (e) => {
     e.preventDefault();
-    const newList = blogs.sort((a, b) => a.likes-b.likes);
-    setBlogs([...newList]);
+    setDescendingOrder(!descendingOrder);
   };
-
-
-  const sortByMostLikes = (e) => {
-    e.preventDefault();
-    const newList = blogs.sort((a, b) => b.likes-a.likes);
-    setBlogs([...newList]);
-  };
-
 
   return(
     <div>
       <h3>Sort blogs by likes</h3>
-      <button onClick={e => sortByLessLikes(e)}>Ascending order</button>
-      <br/>
-      <button className="descending-order-button" onClick={e => sortByMostLikes(e)}>Descending order</button>
+      {descendingOrder?
+        <>
+          <button className="descending-order-button" onClick={e => changeOrder(e)}>Ascending order</button>
+        </>
+        :
+        <>
+          <button onClick={e => changeOrder(e)}>Descending order</button>
+          <br/>
+        </>
+      }
     </div>
   );
 };
