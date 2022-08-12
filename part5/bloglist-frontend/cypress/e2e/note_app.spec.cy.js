@@ -73,16 +73,13 @@ describe('Blog app', () => {
     });
     it.only('blogs are ordered according to likes with the blog with the most likes being first', () => {
       cy.createBlog({ author: 'TestAuthor', title: 'mostLiked', url: 'TestUrl' });
-      // cy.server();
-      // cy.route('PUT', '/api/blogs').as('updateRoute');
 
       cy
         .get('.blog')
         .eq(0)
         .should('contain', 'TestTitle' )
         .contains('View').click();
-      // cy.contains('Like').click();
-      // cy.contains('Hide').click();
+
       cy
         .get('.blog')
         .eq(1)
@@ -95,6 +92,7 @@ describe('Blog app', () => {
       cy.get('.likeButton').eq(1).click();
       cy.wait(1000);
       cy.get('.descending-order-button').trigger('mouseover').click();
+      cy.contains('Descending order').trigger('mouseover').click();
       cy
         .get('.blog')
         .eq(0)
