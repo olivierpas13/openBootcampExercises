@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import Blog from './components/Blog';
-import CreateBlog from './components/CreateBlog';
+import NewBlogForm from './components/NewBlogForm';
 import LoginForm from './components/LoginForm';
 import { Message } from './components/Message';
+import blogFunctions from './utils/blogFunctions';
 import Filter from './components/Filter';
 import blogService from './services/blogs';
 import loginService from './services/login';
@@ -115,7 +116,7 @@ const App = () => {
           <p>{user.name} logged in <button onClick={e => handleLogout(e)}>Log out</button></p>
 
           <Togglable buttonLabel='New note'>
-            <CreateBlog
+            <NewBlogForm
               postBlog={createBlog}
             />
           </Togglable>
@@ -126,6 +127,7 @@ const App = () => {
           />
           {blogs.map(blog =>
             <Blog
+              likeBlog = {blogFunctions.likeBlog}
               loggedUser={user.username}
               setBlogs={setBlogs}
               key={blog.id}

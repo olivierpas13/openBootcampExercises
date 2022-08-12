@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import blogService from '../services/blogs';
 
 function Blog({
-  blog, blogs, setBlogs, loggedUser,
+  blog, blogs, setBlogs, loggedUser,likeBlog
 }) {
   const [visibility, setVisibility] = useState(true);
 
@@ -19,23 +19,6 @@ function Blog({
     setVisibility(!visibility);
   };
 
-  const updateLikes = async () => {
-    const blogObj = {
-      ...blog,
-      likes: blog.likes + 1,
-    };
-    await blogService.updateBlog(blogObj);
-
-    // Another way
-
-    // const listWhitoutTheUpdatedBlog = blogs.filter(blg => blg.id !== blog.id )
-    // const newList = [...listWhitoutTheUpdatedBlog, blogObj]
-
-    const newList = blogs;
-    const indexOfElementToReplace = newList.findIndex((blg) => blg.id === blog.id);
-    newList.splice(indexOfElementToReplace, 1, blogObj);
-    setBlogs([...newList]);
-  };
 
   const removeBlog = async (e) => {
     e.preventDefault();
@@ -60,19 +43,20 @@ function Blog({
             </p>
             <button onClick={toggleVisibility}>View</button>
           </div>
+
         )
         : (
           <div style={blogStyle}>
             <p>
               {blog.title}
               {' '}
-              <button onClick={toggleVisibility}>hide</button>
+              <button onClick={toggleVisibility}>Hide</button>
             </p>
             <p>{blog.url}</p>
             <p>
               {blog.likes}
               {' '}
-              <button onClick={updateLikes}>like</button>
+              <button onClick={() => likeBlog(blog, blogs, setBlogs)}>Like</button>
             </p>
             <p>{blog.author}</p>
             {(blog.user.username === loggedUser)

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-const CreateBlog = ({ postBlog }) => {
+const NewBlogForm = ({ postBlog }) => {
 
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
@@ -33,6 +33,7 @@ const CreateBlog = ({ postBlog }) => {
           value={author}
           name='Author'
           onChange={e => setAuthor(e.target.value)}
+          placeholder='Author'
         />
         <br/>
         <br/>
@@ -41,6 +42,7 @@ const CreateBlog = ({ postBlog }) => {
           value={title}
           name='Title'
           onChange={e => setTitle(e.target.value)}
+          placeholder='Title'
         />
         <br/>
         <br/>
@@ -49,6 +51,7 @@ const CreateBlog = ({ postBlog }) => {
           value={url}
           name='Url'
           onChange={e => setUrl(e.target.value)}
+          placeholder='URL'
         />
         <br/>
         <br/>
@@ -57,4 +60,4 @@ const CreateBlog = ({ postBlog }) => {
     </div>
   );
 };
-export default CreateBlog;
+export default NewBlogForm;
