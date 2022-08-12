@@ -6,6 +6,7 @@ const config = require('./utils/config');
 const loginRouter = require('./controllers/login');
 const blogRouter = require('./controllers/blog');
 const userRouter = require('./controllers/user');
+const testingRouter = require('./controllers/testing');
 const { errorHandler, tokenExtractor, userExtractor } = require('./utils/middleware');
 const logger = require('./utils/logger');
 
@@ -28,6 +29,12 @@ app.use(tokenExtractor);
 app.use('/api/login', loginRouter);
 app.use('/api/users', userRouter);
 app.use('/api/blogs', userExtractor, blogRouter);
+// if (process.env.NODE_ENV === 'test') {
+/* eslint-disable */
+  /* eslint-enable */
+app.use('/api/testing', testingRouter);
+// }
+
 app.use(errorHandler);
 
 module.exports = app;
