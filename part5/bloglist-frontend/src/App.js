@@ -24,7 +24,7 @@ const App = () => {
   }, [user]);
 
   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser');
+    const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser');
 
     if(loggedUserJSON){
       const user = JSON.parse(loggedUserJSON);
@@ -44,7 +44,7 @@ const App = () => {
       setUser(loggedUser);
 
       window.localStorage.setItem(
-        'loggedBlogappUser', JSON.stringify(loggedUser)
+        'loggedBlogAppUser', JSON.stringify(loggedUser)
       );
 
       blogService.setToken(loggedUser.token);
@@ -65,8 +65,8 @@ const App = () => {
   };
 
   const handleLogout = async(event) => {
-    event.
-      window.localStorage.removeItem('loggedBlogappUser');
+    event.preventDefault();
+    window.localStorage.removeItem('loggedBlogAppUser');
     setUser(null);
   };
 
@@ -115,7 +115,7 @@ const App = () => {
           />
           <p>{user.name} logged in <button onClick={e => handleLogout(e)}>Log out</button></p>
 
-          <Togglable buttonLabel='New note'>
+          <Togglable buttonLabel='Create blog'>
             <NewBlogForm
               postBlog={createBlog}
             />
