@@ -20,7 +20,7 @@ const Filter = ({ blogs, setBlogs }) => {
       <h3>Sort blogs by likes</h3>
       <button onClick={e => sortByLessLikes(e)}>Ascending order</button>
       <br/>
-      <button onClick={e => sortByMostLikes(e)}>Descending order</button>
+      <button className="descending-order-button" onClick={e => sortByMostLikes(e)}>Descending order</button>
     </div>
   );
 };

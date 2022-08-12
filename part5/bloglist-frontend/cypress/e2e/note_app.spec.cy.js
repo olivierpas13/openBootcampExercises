@@ -43,10 +43,14 @@ describe('Blog app', () => {
       cy.contains('TestTitle');
     });
   });
-  describe('When a blog exists', () => {
+  describe.only('When a blog exists', () => {
     beforeEach(() => {
       cy.login({ username:'testuser', password:'12345' });
       cy.createBlog({ author: 'TestAuthor', title: 'TestTitle', url: 'TestUrl' });
+    });
+    afterEach(() => {
+      cy.contains('Log out').click();
+
     });
     it('users can like a blog', () => {
       cy.contains('View').click();
@@ -58,15 +62,43 @@ describe('Blog app', () => {
       cy.contains('Delete').click();
       cy.get('TestAuthor').should('not.exist');
     });
-    it.only('other users cannot delete the blog', () => {
+    it('other users cannot delete the blog', () => {
       cy.request('POST', 'http://localhost:3003/api/users', {
         name: 'Pam',
         username: 'TestUser2',
         password: '12345' });
-      cy.contains('Log out').click();
       cy.login({ username: 'TestUser2', password: '12345' });
       cy.contains('View').click();
       cy.contains('Delete').should('not.exist');
+    });
+    it.only('blogs are ordered according to likes with the blog with the most likes being first', () => {
+      cy.createBlog({ author: 'TestAuthor', title: 'mostLiked', url: 'TestUrl' });
+      // cy.server();
+      // cy.route('PUT', '/api/blogs').as('updateRoute');
+
+      cy
+        .get('.blog')
+        .eq(0)
+        .should('contain', 'TestTitle' )
+        .contains('View').click();
+      // cy.contains('Like').click();
+      // cy.contains('Hide').click();
+      cy
+        .get('.blog')
+        .eq(1)
+        .should('contain', 'mostLiked' )
+        .contains('View').click();
+
+      cy.get('.likeButton').eq(0).click();
+      cy.get('.likeButton').eq(1).click();
+      cy.wait(1000);
+      cy.get('.likeButton').eq(1).click();
+      cy.wait(1000);
+      cy.get('.descending-order-button').trigger('mouseover').click();
+      cy
+        .get('.blog')
+        .eq(0)
+        .should('contain', 'mostLiked');
     });
   });
 });

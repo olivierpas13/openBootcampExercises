@@ -34,7 +34,7 @@ function Blog({
     <div>
       {visibility
         ? (
-          <div style={blogStyle}>
+          <div className='blog' style={blogStyle}>
             <p>
               {blog.title}
             </p>
@@ -46,7 +46,7 @@ function Blog({
 
         )
         : (
-          <div style={blogStyle}>
+          <div className='blog' style={blogStyle}>
             <p>
               {blog.title}
               {' '}
@@ -56,7 +56,7 @@ function Blog({
             <p>
               {blog.likes}
               {' '}
-              <button onClick={() => likeBlog(blog, blogs, setBlogs)}>Like</button>
+              <button className='likeButton' onClick={() => likeBlog(blog, blogs, setBlogs)}>Like</button>
             </p>
             <p>{blog.author}</p>
             {(blog.user.username === loggedUser)
