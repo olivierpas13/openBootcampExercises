@@ -42,6 +42,14 @@ const reducer = (state = initialState, action) => {
     const anecdote = action.payload
     console.log(action.payload)
     return [...state, anecdote]
+
+    case('@anecdotes/sorted'):
+    console.log(state.likes)
+    // const sortedList = state.map (anecdote=> anecdote.votes.sort((a, b)=>{return b-a}))
+    const sortedList = state.sort((a , b)=>{return b.votes-a.votes})
+    // const sortedList = state.map(anecdote=> anecdote.votes)
+    // console.log(sortedList)
+    return(sortedList)
     default: return state
   }
 }
