@@ -17,6 +17,19 @@ const asObject = (anecdote) => {
   }
 }
 
+export const anecdoteVote= (id) =>{
+return {
+    type: '@anecdotes/voted',
+    payload: {id}
+  }
+}
+
+export const sortAnecdotes = () =>{
+  return{
+  type: '@anecdotes/sorted'
+  }
+}
+
 export const newAnecdote = (anecdote) =>{
   return{
     type: '@anecdotes/created',
@@ -45,10 +58,7 @@ const reducer = (state = initialState, action) => {
 
     case('@anecdotes/sorted'):
     console.log(state.likes)
-    // const sortedList = state.map (anecdote=> anecdote.votes.sort((a, b)=>{return b-a}))
     const sortedList = state.sort((a , b)=>{return b.votes-a.votes})
-    // const sortedList = state.map(anecdote=> anecdote.votes)
-    // console.log(sortedList)
     return(sortedList)
     default: return state
   }

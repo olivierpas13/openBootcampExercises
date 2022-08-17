@@ -1,30 +1,16 @@
 import { useSelector, useDispatch } from 'react-redux'
 import { AddAnecdoteForm } from './components/AddAnecdoteForm'
+import { anecdoteVote, sortAnecdotes } from './reducers/anecdoteReducer'
 
 const App = () => {
   const anecdotes = useSelector(state => (state))
   const dispatch = useDispatch()
 
-  
-//   const orderAnecdotes = () =>{
-//     return anecdotes.sort((a, b)=>{return b-a})
-// }
-
   const vote = (id) => {
-    // orderAnecdotes()
-
-    dispatch({
-      type: '@anecdotes/voted',
-      payload: {id}
-    })
-
-    dispatch({
-      type: '@anecdotes/sorted'
-    })
-
+    dispatch(anecdoteVote(id))
+    dispatch(sortAnecdotes())
   }
   
-  console.log(anecdotes)
   return (
     <div>
       <h2>Anecdotes</h2>
