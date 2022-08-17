@@ -17,6 +17,13 @@ const asObject = (anecdote) => {
   }
 }
 
+export const newAnecdote = (anecdote) =>{
+  return{
+    type: '@anecdotes/created',
+    payload: asObject(anecdote)
+  }
+}
+
 const initialState = anecdotesAtStart.map(anecdote=> (asObject(anecdote)))
 
 const reducer = (state = initialState, action) => {
@@ -31,11 +38,10 @@ const reducer = (state = initialState, action) => {
     return state.map(blog =>
       blog.id !== id ? blog : blogUpdated 
     )
-    // console.log(id)
-    // return{
-    //     ...blogVoted,
-    //     votes: blogVoted.votes + 1 
-    //   }
+    case('@anecdotes/created'):
+    const anecdote = action.payload
+    console.log(action.payload)
+    return [...state, anecdote]
     default: return state
   }
 }
