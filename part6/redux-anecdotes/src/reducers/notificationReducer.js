@@ -39,13 +39,9 @@ export const setNotification = (notification, time) => {
         
         setTimeout(() => {
            dispatch(deleteNotification()) 
-        }, time);
+        }, (time * 1000));
         
     }
-    // const notification = action.payload.notification
-
-    // dispatchEvent()
-
 }
 
 
