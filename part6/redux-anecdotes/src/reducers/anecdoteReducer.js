@@ -38,7 +38,7 @@ export const initalizeAnecdotes = () =>{
   return async (dispatch) =>{
     const anecdotes = await anecdotesService.getAll()
     dispatch(setAnecdotes(anecdotes))
-    dispatch(sortAnecdotes())
+        dispatch(sortAnecdotes())
 
   }
 }
