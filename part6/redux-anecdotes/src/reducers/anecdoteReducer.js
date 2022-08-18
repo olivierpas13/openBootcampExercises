@@ -1,3 +1,5 @@
+import { createSlice } from "@reduxjs/toolkit"
+
 const anecdotesAtStart = [
   'If it hurts, do it more often',
   'Adding manpower to a late software project makes it later!',
@@ -17,51 +19,87 @@ const asObject = (anecdote) => {
   }
 }
 
-export const anecdoteVote= (id) =>{
-return {
-    type: '@anecdotes/voted',
-    payload: {id}
-  }
-}
-
-export const sortAnecdotes = () =>{
-  return{
-  type: '@anecdotes/sorted'
-  }
-}
-
-export const newAnecdote = (anecdote) =>{
-  return{
-    type: '@anecdotes/created',
-    payload: asObject(anecdote)
-  }
-}
-
 const initialState = anecdotesAtStart.map(anecdote=> (asObject(anecdote)))
+const anecdoteSlice = createSlice({
+  name: 'anecdotes',
+  initialState,
+  reducers:{
+    voteAnecdote(state, action){
+      const id = action.payload
+      const blogVoted = state.find(blog=> blog.id === id)  
+      const blogUpdated = { 
+        ...blogVoted, 
+        votes: blogVoted.votes + 1
+      }
+      return state.map(blog =>
+        blog.id !== id ? blog : blogUpdated 
+      )
+    },
 
-const reducer = (state = initialState, action) => {
-  switch (action.type) {
-    case ('@anecdotes/voted'):
-    const {id} = action.payload
-    const blogVoted = state.find(blog=> blog.id === id)  
-    const blogUpdated = { 
-      ...blogVoted, 
-      votes: blogVoted.votes + 1
+    createAnecdote(state, action){
+      const anecdote = action.payload
+      const newAnecdote = {
+        content: anecdote,
+        id: getId(),
+        votes: 0
+      }
+      state.push(newAnecdote)
+    },
+
+    sortAnecdotes(state, action){
+      const sortedList = state.sort((a , b)=>{return b.votes-a.votes})
+      return sortedList 
     }
-    return state.map(blog =>
-      blog.id !== id ? blog : blogUpdated 
-    )
-    case('@anecdotes/created'):
-    const anecdote = action.payload
-    console.log(action.payload)
-    return [...state, anecdote]
-
-    case('@anecdotes/sorted'):
-    console.log(state.likes)
-    const sortedList = state.sort((a , b)=>{return b.votes-a.votes})
-    return(sortedList)
-    default: return state
   }
-}
+})
 
-export default reducer
+export const {voteAnecdote, createAnecdote, sortAnecdotes} = anecdoteSlice.actions
+
+export default anecdoteSlice.reducer
+
+//     case('@anecdotes/created'):
+//     const anecdote = action.payload
+//     console.log(action.payload)
+//     return [...state, anecdote]
+
+//     case('@anecdotes/sorted'):
+//     console.log(state)
+  //   default: return state
+  // }
+// }
+
+
+
+// const reducer = (state = initialState, action) => {
+//   switch (action.type) {
+//     case ('@anecdotes/voted'):
+//     const {id} = action.payload
+//     const blogVoted = state.find(blog=> blog.id === id)  
+    // const blogUpdated = { 
+    //   ...blogVoted, 
+    //   votes: blogVoted.votes + 1
+    // }
+    // return state.map(blog =>
+    //   blog.id !== id ? blog : blogUpdated 
+    // )
+
+
+// export const anecdoteVote= (id) =>{
+// return {
+//     type: 'anecdotes/voteAnecdote',
+//     payload: {id}
+//   }
+// }
+
+// export const sortAnecdotes = () =>{
+//   return{
+//   type: 'anecdotes/sortAnecdotes'
+//   }
+// }
+
+// export const newAnecdote = (anecdote) =>{
+//   return{
+//     type: '@anecdotes/createAnecdote',
+//     payload: asObject(anecdote)
+//   }
+// }
