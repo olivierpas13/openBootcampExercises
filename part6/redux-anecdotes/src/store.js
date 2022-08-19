@@ -11,6 +11,4 @@ const store = configureStore({
     }
 })
 
-// console.log()
-
 export default store
