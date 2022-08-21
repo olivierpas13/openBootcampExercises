@@ -1,7 +1,7 @@
-import {useMatch, Route, Routes, Link} from 'react-router-dom'
+import {useMatch, Route, Routes, Link, useNavigate} from 'react-router-dom'
 import { useState } from 'react'
 
-const Menu = ({addNew, anecdotes}) => {
+const Menu = ({addNew, anecdotes, setNotification, notification}) => {
   const padding = {
     paddingRight: 5
   }
@@ -11,17 +11,24 @@ const Menu = ({addNew, anecdotes}) => {
     ? anecdotes.find(anecdote => anecdote.id === Number(match.params.id))
     : null
 
+    if(notification){
+      setTimeout(() => {
+       setNotification('') 
+      }, 5000);
+    }
+
   return (
     <>
     <div>
       <Link to='/' style={padding}>anecdotes</Link>
       <Link to='/create' style={padding}>create new</Link>
       <Link to='/about' style={padding}>about</Link>
+      <p>{notification}</p>
     </div>
     <Routes>
       <Route path='/anecdotes/:id' element={ <Anecdote anecdote={anecdote}/> }/>
       <Route path='/about' element={<About/>}/>
-      <Route path='/create' element={<CreateNew addNew={addNew}/>}/>
+      <Route path='/create' element={<CreateNew  setNotification = {setNotification} addNew={addNew}/>}/>
       <Route path='/' element={<AnecdoteList anecdotes={anecdotes}/>}/>
     </Routes>
     </>
@@ -82,6 +89,7 @@ const CreateNew = (props) => {
   const [author, setAuthor] = useState('')
   const [info, setInfo] = useState('')
 
+  const navigate = useNavigate()
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -91,6 +99,8 @@ const CreateNew = (props) => {
       info,
       votes: 0
     })
+    props.setNotification(`A new anecdote ${content}!`)
+    navigate('/')
   }
 
   return (
@@ -158,7 +168,7 @@ const App = () => {
   return (
     <div>
       <h1>Software anecdotes</h1>
-      <Menu addNew={addNew} anecdotes={anecdotes}/>
+      <Menu notification={notification} addNew={addNew} anecdotes={anecdotes} setNotification={setNotification}/>
       <Footer />
     </div>
   )
