@@ -20,7 +20,7 @@ const likeBlog = async (blog, blogs, setBlogs) => {
 
 const blogFunctions = {
   // addBlog,
-  likeBlog
+  likeBlog,
 };
 
 export default blogFunctions;

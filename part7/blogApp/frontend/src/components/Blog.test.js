@@ -7,15 +7,13 @@ const blog = {
   author: 'Test author',
   url: '123.com',
   likes: 3,
-  user:{
-    username: 'testuser'
-  }
+  user: {
+    username: 'testuser',
+  },
 };
 
-
 test('component displaying a blog renders only the blog\'s title and author', () => {
-
-  const component = render(<Blog blog={blog}  />);
+  const component = render(<Blog blog={blog} />);
 
   component.getByText(blog.title);
   component.getByText(blog.author);
@@ -24,7 +22,7 @@ test('component displaying a blog renders only the blog\'s title and author', ()
 });
 
 test('blog\'s url and number of likes are shown when the button controlling the shown details has been clicked', () => {
-  const component = render(<Blog blog={blog}/>);
+  const component = render(<Blog blog={blog} />);
 
   const button = component.getByText('View');
 
@@ -36,11 +34,9 @@ test('blog\'s url and number of likes are shown when the button controlling the 
   component.getByText(blog.likes);
 
   expect(button).toBeDefined();
-
 });
 
-test(' if the like button is clicked twice, the event handler the component received as props is called twice', () => {
-
+test('if the like button is clicked twice, the event handler the component received as props is called twice', () => {
   const mockHandler = jest.fn();
 
   const component = render(<Blog blog={blog} likeBlog={mockHandler} />);
@@ -56,4 +52,3 @@ test(' if the like button is clicked twice, the event handler the component rece
 
   expect(mockHandler).toHaveBeenCalledTimes(2);
 });
-

@@ -1,7 +1,6 @@
 import { useState } from 'react';
 
 const NewBlogForm = ({ postBlog }) => {
-
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [url, setUrl] = useState('');
@@ -10,9 +9,9 @@ const NewBlogForm = ({ postBlog }) => {
     e.preventDefault();
 
     const blogToAdd = {
-      author: author,
-      title: title,
-      url: url
+      author,
+      title,
+      url,
     };
 
     // postBlog(author, title, url)
@@ -21,42 +20,47 @@ const NewBlogForm = ({ postBlog }) => {
     setTitle('');
     setAuthor('');
     setUrl('');
-
   };
 
-  return(
+  return (
     <div>
       <h2>Create new</h2>
       <form>
-                Author: <input
+        Author:
+        {' '}
+        <input
           type="text"
           value={author}
-          name='Author'
-          onChange={e => setAuthor(e.target.value)}
-          placeholder='Author'
+          name="Author"
+          onChange={(e) => setAuthor(e.target.value)}
+          placeholder="Author"
         />
-        <br/>
-        <br/>
-                Title: <input
+        <br />
+        <br />
+        Title:
+        {' '}
+        <input
           type="text"
           value={title}
-          name='Title'
-          onChange={e => setTitle(e.target.value)}
-          placeholder='Title'
+          name="Title"
+          onChange={(e) => setTitle(e.target.value)}
+          placeholder="Title"
         />
-        <br/>
-        <br/>
-                URL: <input
+        <br />
+        <br />
+        URL:
+        {' '}
+        <input
           type="text"
           value={url}
-          name='Url'
-          onChange={e => setUrl(e.target.value)}
-          placeholder='URL'
+          name="Url"
+          onChange={(e) => setUrl(e.target.value)}
+          placeholder="URL"
         />
-        <br/>
-        <br/>
+        <br />
+        <br />
       </form>
-      <button onClick={e => addBlog(e)}>create</button>
+      <button type="submit" onClick={(e) => addBlog(e)}>create</button>
     </div>
   );
 };
