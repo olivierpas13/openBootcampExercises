@@ -8,13 +8,15 @@ import Filter from './components/Filter';
 import blogService from './services/blogs';
 import loginService from './services/login';
 import Togglable from './components/Togglable';
+import { setNotification } from './reducers/notificationReducer';
+import { useDispatch } from 'react-redux';
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [message, setMessage] = useState([]);
   const [user, setUser] = useState(null);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if(user){
@@ -48,18 +50,18 @@ const App = () => {
       );
 
       blogService.setToken(loggedUser.token);
-      setMessage(['message', `User ${loggedUser.username} logged in`]);
-      setTimeout(() => {
-        setMessage([]);
-      }, 5000);
+      dispatch(setNotification({
+        message: `User ${loggedUser.username} logged in`,
+        type: 'message'
+      }, 5));
       setPassword('');
       setUsername('');
 
     } catch (error) {
-      setMessage(['error', 'Invalid credentials']);
-      setTimeout(() => {
-        setMessage([]);
-      }, 5000);
+      dispatch(setNotification({
+        message:  'Invalid credentials',
+        type: 'error'
+      }, 5));
       console.error('error');
     }
   };
@@ -76,15 +78,15 @@ const App = () => {
       await blogService.getAll(user).then(blogs =>
         setBlogs( blogs )
       );
-      setMessage(['message', `A new blog ${blogObj.title} by ${blogObj.author} added`]);
-      setTimeout(() => {
-        setMessage([]);
-      }, 5000);
+      dispatch(setNotification({
+        message: `A new blog ${blogObj.title} by ${blogObj.author} added`,
+        type: 'message'
+      }, 5));
     } catch (error) {
-      setMessage(['error', 'Invalid creation, fields required missing']);
-      setTimeout(() => {
-        setMessage([]);
-      }, 5000);
+      dispatch(setNotification({
+        message: 'Invalid creation, fields required missing',
+        type: 'error'
+      }, 5));
       console.error(error);
     }
   };
@@ -102,16 +104,12 @@ const App = () => {
             password={password}
           />
           <Message
-            type={message[0]}
-            message={message[1]}
           />
         </div>
         :
         <div>
           <h2>Blogs</h2>
           <Message
-            type={message[0]}
-            message={message[1]}
           />
           <p>{user.name} logged in <button onClick={e => handleLogout(e)}>Log out</button></p>
 
