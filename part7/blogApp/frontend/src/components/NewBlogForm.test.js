@@ -3,22 +3,22 @@ import { render } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
 import userEvent from '@testing-library/user-event';
 import NewBlogForm from './NewBlogForm';
-
 const blog = {
   title: 'Test title',
   author: 'Test author',
   url: '123.com',
   likes: 3,
-  user: {
-    username: 'testuser',
-  },
+  user:{
+    username: 'testuser'
+  }
 };
 
 test('the form calls the event handler it received as props with the right details when a new blog is created', async () => {
+
   const createBlog = jest.fn();
   const user = userEvent.setup();
 
-  const component = render(<NewBlogForm postBlog={createBlog} />);
+  const component = render(<NewBlogForm postBlog={createBlog}  />);
   const authorInput = component.getByPlaceholderText('Author');
   const titleInput = component.getByPlaceholderText('Title');
   const urlInput = component.getByPlaceholderText('URL');

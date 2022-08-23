@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import blogService from '../services/blogs';
 
 function Blog({
-  blog, blogs, setBlogs, loggedUser, likeBlog,
+  blog, blogs, setBlogs, loggedUser,likeBlog
 }) {
   const [visibility, setVisibility] = useState(true);
 
@@ -19,6 +19,7 @@ function Blog({
     setVisibility(!visibility);
   };
 
+
   const removeBlog = async (e) => {
     e.preventDefault();
     if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
@@ -33,35 +34,34 @@ function Blog({
     <div>
       {visibility
         ? (
-          <div className="blog" style={blogStyle}>
+          <div className='blog' style={blogStyle}>
             <p>
               {blog.title}
             </p>
             <p>
               {blog.author}
             </p>
-            <button type="button" onClick={toggleVisibility}>View</button>
+            <button onClick={toggleVisibility}>View</button>
           </div>
 
         )
         : (
-          <div className="blog" style={blogStyle}>
+          <div className='blog' style={blogStyle}>
             <p>
               {blog.title}
               {' '}
-              <button type="button" onClick={toggleVisibility}>Hide</button>
+              <button onClick={toggleVisibility}>Hide</button>
             </p>
             <p>{blog.url}</p>
             <p>
               {blog.likes}
               {' '}
-              <button type="button" className="likeButton" onClick={() => likeBlog(blog, blogs, setBlogs)}>Like</button>
+              <button className='likeButton' onClick={() => likeBlog(blog, blogs, setBlogs)}>Like</button>
             </p>
             <p>{blog.author}</p>
             {(blog.user.username === loggedUser)
-              ? <button type="button" onClick={(e) => removeBlog(e)}>Delete</button>
-              // fragment
-              : null }
+              ? <button onClick={(e) => removeBlog(e)}>Delete</button>
+              : <></>}
           </div>
         )}
     </div>

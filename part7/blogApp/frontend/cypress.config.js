@@ -1,6 +1,5 @@
-const { defineConfig } = require('cypress');
+const { defineConfig } = require("cypress");
 
-/* eslint-disable*/
 module.exports = defineConfig({
   e2e: {
     setupNodeEvents(on, config) {
@@ -8,4 +7,3 @@ module.exports = defineConfig({
     },
   },
 });
-/* eslint-enable */
