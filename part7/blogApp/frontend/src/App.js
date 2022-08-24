@@ -1,17 +1,9 @@
 import { useEffect } from 'react';
 import Home from './components/Home';
-
-// import Blog from './components/Blog';
 import Blogs from './components/Blogs';
 import Users from './components/Users';
-// import NewBlogForm from './components/NewBlogForm';
 import LoginForm from './components/LoginForm';
-// import { Message } from './components/Message';
-// import blogFunctions from './utils/blogFunctions';
 import blogService from './services/blogs';
-// import loginService from './services/login';
-// import Togglable from './components/Togglable';
-// import { setNotification } from './reducers/notificationReducer';
 import { useDispatch } from 'react-redux';
 import { initalizeBlogs } from './reducers/blogReducer';
 import { useMatch,
@@ -23,8 +15,7 @@ import OneBlog from './components/OneBlog';
 const App = () => {
   const dispatch = useDispatch();
   const blogs =  useSelector(state => state.blogs);
-  const user = useSelector(state => state.user);
-
+  const { loggedUser } = useSelector(state => state.user);
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser');
 
@@ -38,7 +29,7 @@ const App = () => {
 
   useEffect(() => {
     dispatch(initalizeBlogs());
-  }, [user]);
+  }, [loggedUser]);
 
   const handleLogout = async(event) => {
     event.preventDefault();
@@ -69,14 +60,15 @@ const App = () => {
         Users
         </Link>
         {
-          user
-            ? <em>{user.username} logged in <button onClick={(e) => {handleLogout(e);}}>Logout</button></em>
+          loggedUser
+            ? <em>{loggedUser.username} logged in <button onClick={(e) => {handleLogout(e);}}>Logout</button></em>
             :<Link style={padding} to='/login'> Login </Link>
         }
+        <h1>Blog App</h1>
       </div>
 
       <Routes>
-        <Route path='/blogs/:id' element={blog? <OneBlog blog={blog} loggedUser={user} />: <Navigate replace to={'/'}/> }/>
+        <Route path='/blogs/:id' element={blog? <OneBlog blog={blog} loggedUser={loggedUser} />: <Navigate replace to={'/'}/> }/>
         <Route path='/blogs' element={<Blogs/>}/>
         <Route path='/users' element={<Users/>} />
         <Route path='/login' element={<LoginForm/>} />

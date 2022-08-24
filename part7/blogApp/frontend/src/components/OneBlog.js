@@ -32,9 +32,10 @@ const OneBlog =({
         <button className='likeButton' onClick={(e) => likeBlog(blog.id, e)}>Like</button>
       </p>
       <p>Added by {blog.user.username}</p>
-      {(blog.user.username === loggedUser.username)
+      {loggedUser ?(blog.user.username === loggedUser.username)
         ? <button onClick={(e) => removeBlog(e)}>Delete</button>
-        : <></>}
+        : <></>
+        :null}
     </div>
   );
 };

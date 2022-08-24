@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom';
 
 const Blogs = () => {
   const blogs =  useSelector(state => state.blogs);
-  const user = useSelector(state => state.user);
 
   return(
     <div>
@@ -14,7 +13,6 @@ const Blogs = () => {
       {blogs.map(blog => (
         <Link to={`/blogs/${blog.id}`} key={blog.id}>
           <Blog
-            loggedUser={user.username}
             blog={blog}
           />
         </Link>
