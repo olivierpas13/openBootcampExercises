@@ -1,10 +1,33 @@
 import { useState } from 'react';
-const NewBlogForm = ({ postBlog }) => {
+import { useDispatch } from 'react-redux';
+import { createNewBlog } from '../reducers/blogReducer';
+import { setNotification } from '../reducers/notificationReducer';
+
+const NewBlogForm = () => {
 
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [url, setUrl] = useState('');
 
+  const dispatch = useDispatch();
+
+  const createBlog = async(blogObj) => {
+    try {
+      await dispatch(createNewBlog(blogObj));
+
+      dispatch(setNotification({
+        message: `A new blog ${blogObj.title} by ${blogObj.author} added`,
+        type: 'message'
+      }, 5));
+    } catch (rejectedValueOrSerializedError) {
+      console.log('error en app');
+      dispatch(setNotification({
+        message: 'Invalid creation, fields required missing',
+        type: 'error'
+      }, 5));
+      console.error(rejectedValueOrSerializedError);
+    }
+  };
 
   const addBlog = (e) => {
     e.preventDefault();
@@ -15,7 +38,7 @@ const NewBlogForm = ({ postBlog }) => {
       url: url
     };
 
-    postBlog(blogToAdd);
+    createBlog(blogToAdd);
     setTitle('');
     setAuthor('');
     setUrl('');
