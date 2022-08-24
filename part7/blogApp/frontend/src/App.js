@@ -11,20 +11,23 @@ import { setNotification } from './reducers/notificationReducer';
 import { useDispatch } from 'react-redux';
 import { createNewBlog, initalizeBlogs } from './reducers/blogReducer';
 import { useSelector } from 'react-redux';
+import { login } from './reducers/userReducer';
 
 const App = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [user, setUser] = useState(null);
+  // const [user, setUser] = useState(null);
   const dispatch = useDispatch();
   const blogs =  useSelector(state => state.blogs);
+  const user = useSelector(state => state.user);
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser');
 
     if(loggedUserJSON){
       const user = JSON.parse(loggedUserJSON);
-      setUser(user);
+      // setUser(user);
+      dispatch(login(user));
       blogService.setToken(user.token);
     }
   }, []);
@@ -43,8 +46,8 @@ const App = () => {
         password
       });
 
-      setUser(loggedUser);
-
+      dispatch(login(loggedUser)
+      );
       window.localStorage.setItem(
         'loggedBlogAppUser', JSON.stringify(loggedUser)
       );
@@ -69,7 +72,7 @@ const App = () => {
   const handleLogout = async(event) => {
     event.preventDefault();
     window.localStorage.removeItem('loggedBlogAppUser');
-    setUser(null);
+    dispatch(login(null));
   };
 
   const createBlog = async(blogObj) => {
