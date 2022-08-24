@@ -26,10 +26,16 @@ const getOne = (id) => {
 };
 
 const postBlog = async (blogObj) => {
-  const config = {
-    headers: { Authorization: token },
-  };
-  await axios.post(baseUrl, blogObj, config);
+  try {
+    const config = {
+      headers: { Authorization: token },
+    };
+    const response = await axios.post(baseUrl, blogObj, config);
+    return response.data;
+  } catch (error) {
+    console.log('response');
+    return error;
+  }
 };
 
 const updateBlog = async (blogObj) => {

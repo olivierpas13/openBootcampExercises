@@ -4,26 +4,20 @@ import NewBlogForm from './components/NewBlogForm';
 import LoginForm from './components/LoginForm';
 import { Message } from './components/Message';
 import blogFunctions from './utils/blogFunctions';
-import Filter from './components/Filter';
 import blogService from './services/blogs';
 import loginService from './services/login';
 import Togglable from './components/Togglable';
 import { setNotification } from './reducers/notificationReducer';
 import { useDispatch } from 'react-redux';
+import { createNewBlog, initalizeBlogs } from './reducers/blogReducer';
+import { useSelector } from 'react-redux';
 
 const App = () => {
-  const [blogs, setBlogs] = useState([]);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [user, setUser] = useState(null);
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    if(user){
-      blogService.getAll().then(blogs =>
-        setBlogs( blogs )
-      );}
-  }, [user]);
+  const blogs =  useSelector(state => state.blogs);
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser');
@@ -31,8 +25,14 @@ const App = () => {
     if(loggedUserJSON){
       const user = JSON.parse(loggedUserJSON);
       setUser(user);
-      blogService.setToken(user.token);}
+      blogService.setToken(user.token);
+    }
   }, []);
+
+
+  useEffect(() => {
+    dispatch(initalizeBlogs());
+  }, [user]);
 
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -74,20 +74,19 @@ const App = () => {
 
   const createBlog = async(blogObj) => {
     try {
-      await blogService.postBlog(blogObj);
-      await blogService.getAll(user).then(blogs =>
-        setBlogs( blogs )
-      );
+      await dispatch(createNewBlog(blogObj));
+
       dispatch(setNotification({
         message: `A new blog ${blogObj.title} by ${blogObj.author} added`,
         type: 'message'
       }, 5));
-    } catch (error) {
+    } catch (rejectedValueOrSerializedError) {
+      console.log('error en app');
       dispatch(setNotification({
         message: 'Invalid creation, fields required missing',
         type: 'error'
       }, 5));
-      console.error(error);
+      console.error(rejectedValueOrSerializedError);
     }
   };
 
@@ -119,15 +118,15 @@ const App = () => {
             />
           </Togglable>
           <br/>
-          <Filter
+          {/* <Filter
             blogs={blogs}
-            setBlogs={setBlogs}
-          />
+            // setBlogs={setBlogs}
+          /> */}
           {blogs.map(blog =>
             <Blog
               likeBlog = {blogFunctions.likeBlog}
               loggedUser={user.username}
-              setBlogs={setBlogs}
+              // setBlogs={setBlogs}
               key={blog.id}
               blog={blog}
               blogs={blogs}

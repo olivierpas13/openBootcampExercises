@@ -1,10 +1,10 @@
 import { useState } from 'react';
-
 const NewBlogForm = ({ postBlog }) => {
 
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
   const [url, setUrl] = useState('');
+
 
   const addBlog = (e) => {
     e.preventDefault();
@@ -15,9 +15,7 @@ const NewBlogForm = ({ postBlog }) => {
       url: url
     };
 
-    // postBlog(author, title, url)
     postBlog(blogToAdd);
-
     setTitle('');
     setAuthor('');
     setUrl('');

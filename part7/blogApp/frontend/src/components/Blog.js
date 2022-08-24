@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import blogService from '../services/blogs';
+// import blogService from '../services/blogs';
 
-function Blog({
-  blog, blogs, setBlogs, loggedUser,likeBlog
-}) {
+const Blog =({
+  blog, blogs, loggedUser,likeBlog
+}) => {
   const [visibility, setVisibility] = useState(true);
 
   const blogStyle = {
@@ -20,14 +20,14 @@ function Blog({
   };
 
 
-  const removeBlog = async (e) => {
-    e.preventDefault();
-    if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
-      await blogService.deleteBlog(blog.id);
-      const newList = blogs.filter((blg) => blg.id !== blog.id);
-      setBlogs([...newList]);
-    }
-  };
+  // const removeBlog = async (e) => {
+  //   e.preventDefault();
+  //   if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
+  //     await blogService.deleteBlog(blog.id);
+  //     const newList = blogs.filter((blg) => blg.id !== blog.id);
+  //     setBlogs([...newList]);
+  //   }
+  // };
 
   return (
 
@@ -56,16 +56,17 @@ function Blog({
             <p>
               {blog.likes}
               {' '}
-              <button className='likeButton' onClick={() => likeBlog(blog, blogs, setBlogs)}>Like</button>
+              <button className='likeButton' onClick={() => likeBlog(blog, blogs)}>Like</button>
             </p>
             <p>{blog.author}</p>
             {(blog.user.username === loggedUser)
-              ? <button onClick={(e) => removeBlog(e)}>Delete</button>
+              ? <button onClick={(e) => (e)}>Delete</button>
+              // ? <button onClick={(e) => removeBlog(e)}>Delete</button>
               : <></>}
           </div>
         )}
     </div>
   );
-}
+};
 
 export default Blog;
