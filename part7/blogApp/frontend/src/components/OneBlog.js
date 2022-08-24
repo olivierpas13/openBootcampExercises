@@ -1,5 +1,6 @@
 import { useDispatch } from 'react-redux';
 import { deleteOneBlog, voteForBlog } from '../reducers/blogReducer';
+import Comments from './Comments';
 
 const OneBlog =({
   blog, loggedUser
@@ -32,6 +33,7 @@ const OneBlog =({
         <button className='likeButton' onClick={(e) => likeBlog(blog.id, e)}>Like</button>
       </p>
       <p>Added by {blog.user.username}</p>
+      <Comments comments={blog.comments}/>
       {loggedUser ?(blog.user.username === loggedUser.username)
         ? <button onClick={(e) => removeBlog(e)}>Delete</button>
         : <></>

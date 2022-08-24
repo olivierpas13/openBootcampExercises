@@ -1,10 +1,15 @@
-import { useDispatch } from 'react-redux';
-import { useCallback } from 'react';
-import { unwrapResult } from '@reduxjs/toolkit';
+import { useState } from 'react';
 
-export const useUnwrapAsyncThunk = () => {
-  const dispatch = useDispatch();
-  return useCallback((asyncThunk) => {
-    return dispatch(asyncThunk).then(unwrapResult);
-  }), [dispatch];
+export const useField = (type) => {
+  const [value, setValue] = useState('');
+
+  const onChange = (event) => {
+    setValue(event.target.value);
+  };
+
+  return {
+    type,
+    value,
+    onChange
+  };
 };
