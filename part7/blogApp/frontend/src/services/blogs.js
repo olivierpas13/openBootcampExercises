@@ -38,9 +38,18 @@ const postBlog = async (blogObj) => {
   }
 };
 
-const updateBlog = async (blogObj) => {
+const updateBlog = async (id) => {
   const config = {
     headers: { Authorization: token },
+  };
+
+  const blogs = await getAll();
+
+  const votedBlog = await blogs.find(blog => blog.id === id);
+
+  const blogObj= {
+    ...votedBlog,
+    likes: votedBlog.likes + 1
   };
 
   await axios.put(`${baseUrl}/${blogObj.id}`, blogObj, config);

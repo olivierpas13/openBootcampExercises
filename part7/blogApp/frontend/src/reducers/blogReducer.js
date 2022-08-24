@@ -12,6 +12,19 @@ const blogSlice = createSlice({
     },
     setBlogs(state, action){
       return action.payload;
+    },
+    voteBlog(state, action){
+      const id = action.payload;
+      const blogVoted  = state.find(blog => blog.id === id);
+      const blogObj = {
+        ...blogVoted,
+        likes: blogVoted.likes + 1
+      };
+      return state.map(blog => blog.id !== id? blog:blogObj);
+    },
+    eliminateBlog(state, action){
+      const id = action.payload;
+      return state.filter(blog => blog.id !== id);
     }
   }
 });
@@ -38,6 +51,20 @@ export const createNewBlog = (content) => {
   };
 };
 
-export const { createBlog, setBlogs } = blogSlice.actions;
+export const voteForBlog = (id) => {
+  return async(dispatch) => {
+    await blogService.updateBlog(id);
+    dispatch(voteBlog(id));
+  };
+};
+
+export const deleteOneBlog = (id) => {
+  return async(dispatch) => {
+    await blogService.deleteBlog(id);
+    dispatch(eliminateBlog(id));
+  };
+};
+
+export const { createBlog, setBlogs, voteBlog, eliminateBlog } = blogSlice.actions;
 
 export default blogSlice.reducer;
