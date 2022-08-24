@@ -64,13 +64,33 @@ const deleteBlog = async (id) => {
   return request.then(response => response.data);
 };
 
+const commentBlog = async(id, comment) => {
+  const config = {
+    headers: { Authorization: token },
+  };
+
+  const blogs = await getAll();
+
+  const blog = await blogs.find(blog => blog.id === id);
+
+  const blogObj ={
+    ...blog,
+    comments: comment
+  };
+
+  const request = axios.put(`${baseUrl}/${id}`, blogObj, config);
+  return request.data;
+};
+
+
 const blogService={
   getOne,
   updateBlog,
   setToken,
   getAll,
   postBlog,
-  deleteBlog
+  deleteBlog,
+  commentBlog
 };
 
 export default blogService;

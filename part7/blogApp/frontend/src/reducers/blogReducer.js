@@ -16,6 +16,7 @@ const blogSlice = createSlice({
     voteBlog(state, action){
       const id = action.payload;
       const blogVoted  = state.find(blog => blog.id === id);
+      console.log(blogVoted);
       const blogObj = {
         ...blogVoted,
         likes: blogVoted.likes + 1
@@ -25,6 +26,25 @@ const blogSlice = createSlice({
     eliminateBlog(state, action){
       const id = action.payload;
       return state.filter(blog => blog.id !== id);
+    },
+    commentOneBlog(state, action){
+      const { id } = action.payload;
+      const { content } = action.payload;
+
+      console.log(id);
+      console.log(content);
+
+      const blogCommented  = state.find(blog => blog.id === id);
+
+      console.log(blogCommented);
+
+      const blogObj ={
+        ...blogCommented,
+        comments: blogCommented.comments.concat(content)
+      };
+
+      return state.map(blog => blog.id !== id? blog:blogObj);
+
     }
   }
 });
@@ -65,6 +85,18 @@ export const deleteOneBlog = (id) => {
   };
 };
 
-export const { createBlog, setBlogs, voteBlog, eliminateBlog } = blogSlice.actions;
+export const commentBlog = (content, id) => {
+  return async (dispatch) => {
+    await blogService.commentBlog(id, content);
+    dispatch(commentOneBlog(
+      {
+        content,
+        id
+      }
+    ));
+  };
+};
+
+export const { createBlog, setBlogs, voteBlog, eliminateBlog, commentOneBlog } = blogSlice.actions;
 
 export default blogSlice.reducer;

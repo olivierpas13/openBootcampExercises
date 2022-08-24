@@ -33,7 +33,7 @@ const OneBlog =({
         <button className='likeButton' onClick={(e) => likeBlog(blog.id, e)}>Like</button>
       </p>
       <p>Added by {blog.user.username}</p>
-      <Comments comments={blog.comments}/>
+      <Comments comments={blog.comments} blogId={blog.id} />
       {loggedUser ?(blog.user.username === loggedUser.username)
         ? <button onClick={(e) => removeBlog(e)}>Delete</button>
         : <></>
