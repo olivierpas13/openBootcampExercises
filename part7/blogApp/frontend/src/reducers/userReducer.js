@@ -18,7 +18,6 @@ const userSlice = createSlice({
     setUsers(state, action){
       return{
         ...state,
-        // users: action.payload.map(user => {user.name;})
         users: action.payload
       };
 

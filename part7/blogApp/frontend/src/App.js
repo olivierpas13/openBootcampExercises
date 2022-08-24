@@ -11,14 +11,16 @@ import { useMatch,
 import { useSelector } from 'react-redux';
 import { login } from './reducers/userReducer';
 import OneBlog from './components/OneBlog';
+import User from './components/User';
 
 const App = () => {
   const dispatch = useDispatch();
   const blogs =  useSelector(state => state.blogs);
   const { loggedUser } = useSelector(state => state.user);
+  const { users } = useSelector(state => state.user);
+
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogAppUser');
-
     if(loggedUserJSON){
       const user = JSON.parse(loggedUserJSON);
       dispatch(login(user));
@@ -41,11 +43,15 @@ const App = () => {
     padding: 5
   };
 
-  console.log(blogs.find(blog => blog.id === '62f6b34258c09fcace0dc568'));
-  const match = useMatch('/blogs/:id');
-  const blog = match
-    ? blogs.find(blog => (blog.id) === (match.params.id))
+  const blogMatch = useMatch('/blogs/:id');
+  const blog = blogMatch
+    ? blogs.find(blog => (blog.id) === (blogMatch.params.id))
     : null;
+
+  const userMatch = useMatch('/users/:id');
+  const user = userMatch
+    ? users.find(user => user.id === (userMatch.params.id))
+    :null;
 
   return (
     <>
@@ -68,6 +74,7 @@ const App = () => {
       </div>
 
       <Routes>
+        <Route path='/users/:id' element={user? <User user={user} />: <Navigate replace to={'/'}/> }/>
         <Route path='/blogs/:id' element={blog? <OneBlog blog={blog} loggedUser={loggedUser} />: <Navigate replace to={'/'}/> }/>
         <Route path='/blogs' element={<Blogs/>}/>
         <Route path='/users' element={<Users/>} />
