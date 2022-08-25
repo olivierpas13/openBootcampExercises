@@ -124,7 +124,7 @@ const typeDefs = gql`
     editAuthor(
       name: String!
       setBornTo: Int!
-    ):Author
+    ):AuthorS
   }
 
 `
