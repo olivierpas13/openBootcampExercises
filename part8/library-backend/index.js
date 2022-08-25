@@ -120,6 +120,11 @@ const typeDefs = gql`
       author: String!
       genres: [String]!
     ): Book
+
+    editAuthor(
+      name: String!
+      setBornTo: Int!
+    ):Author
   }
 
 `
@@ -151,9 +156,19 @@ const resolvers = {
         name: book.author,
         id: uuid()
       })}
-
       return book
-    }
+    },
+    editAuthor: (root, args) => {
+      const {name, setBornTo} = args
+      const index = authors.findIndex(author=> author.name === name)
+      if(index === -1){return null}
+      const authorToEdit = authors[index]
+
+      const author = {...authorToEdit, born: setBornTo}
+
+      authors[index] = author
+      return author  
+       }
   },
   Author: {
     bookcount: (root) => {
