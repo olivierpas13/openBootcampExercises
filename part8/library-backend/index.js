@@ -107,6 +107,7 @@ const typeDefs = gql`
   type Query {
     bookCount: Int!
     authorCount: Int!
+    allBooks: [Book]
   }
 `
 
@@ -117,6 +118,9 @@ const resolvers = {
     },
     authorCount: () => {
       return authors.length
+    },
+    allBooks: () => {
+      return books
     }
   }
 }
