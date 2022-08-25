@@ -24,7 +24,6 @@ let timerID;
 export const setNotification = (notification, time) => {
 
   return async (dispatch) => {
-    console.log(notification);
     dispatch(createNotification(notification));
 
     if(timerID){clearTimeout(timerID);}

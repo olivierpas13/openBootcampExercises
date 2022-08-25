@@ -1,26 +1,36 @@
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { createNewBlog } from '../reducers/blogReducer';
 import { setNotification } from '../reducers/notificationReducer';
+import { useField } from '../hooks';
+import  TextField  from '@mui/material/TextField';
+
+
+import  Button  from '@mui/material/Button';
 
 const NewBlogForm = () => {
 
-  const [title, setTitle] = useState('');
-  const [author, setAuthor] = useState('');
-  const [url, setUrl] = useState('');
+  const title = useField('text');
+  const author = useField('text');
+  const url = useField('text');
 
   const dispatch = useDispatch();
+  const { loggedUser } = useSelector(state => state.user);
 
   const createBlog = async(blogObj) => {
     try {
+      if(!loggedUser){
+        return dispatch(setNotification({
+          message: 'Invalid creation, login first',
+          type: 'error'
+        }, 5));
+      }
       await dispatch(createNewBlog(blogObj));
 
       dispatch(setNotification({
         message: `A new blog ${blogObj.title} by ${blogObj.author} added`,
-        type: 'message'
+        type: 'success'
       }, 5));
     } catch (rejectedValueOrSerializedError) {
-      console.log('error en app');
       dispatch(setNotification({
         message: 'Invalid creation, fields required missing',
         type: 'error'
@@ -33,51 +43,41 @@ const NewBlogForm = () => {
     e.preventDefault();
 
     const blogToAdd = {
-      author: author,
-      title: title,
-      url: url
+      author: author.value,
+      title: title.value,
+      url: url.value
     };
 
     createBlog(blogToAdd);
-    setTitle('');
-    setAuthor('');
-    setUrl('');
-
   };
 
   return(
     <div>
       <h2>Create new</h2>
       <form>
-                Author: <input
-          type="text"
-          value={author}
-          name='Author'
-          onChange={e => setAuthor(e.target.value)}
+        <TextField
+          label='Author'
+          {...author}
           placeholder='Author'
         />
         <br/>
         <br/>
-                Title: <input
-          type="text"
-          value={title}
-          name='Title'
-          onChange={e => setTitle(e.target.value)}
+        <TextField
+          label='Title'
+          {...title}
           placeholder='Title'
         />
         <br/>
         <br/>
-                URL: <input
-          type="text"
-          value={url}
-          name='Url'
-          onChange={e => setUrl(e.target.value)}
+        <TextField
+          label='Url'
+          {...url}
           placeholder='URL'
         />
         <br/>
         <br/>
       </form>
-      <button onClick={e => addBlog(e)}>create</button>
+      <Button variant='outlined' color='secondary' onClick={e => addBlog(e)}>create</Button>
     </div>
   );
 };

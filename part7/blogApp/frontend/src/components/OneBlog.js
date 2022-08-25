@@ -5,7 +5,6 @@ import Comments from './Comments';
 const OneBlog =({
   blog, loggedUser
 }) => {
-  console.log(loggedUser);
 
   const dispatch = useDispatch();
 

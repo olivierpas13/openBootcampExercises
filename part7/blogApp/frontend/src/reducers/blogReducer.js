@@ -16,7 +16,6 @@ const blogSlice = createSlice({
     voteBlog(state, action){
       const id = action.payload;
       const blogVoted  = state.find(blog => blog.id === id);
-      console.log(blogVoted);
       const blogObj = {
         ...blogVoted,
         likes: blogVoted.likes + 1
@@ -31,12 +30,7 @@ const blogSlice = createSlice({
       const { id } = action.payload;
       const { content } = action.payload;
 
-      console.log(id);
-      console.log(content);
-
       const blogCommented  = state.find(blog => blog.id === id);
-
-      console.log(blogCommented);
 
       const blogObj ={
         ...blogCommented,
@@ -49,7 +43,7 @@ const blogSlice = createSlice({
   }
 });
 
-export const initalizeBlogs = () => {
+export const initializeBlogs = () => {
   return async (dispatch) => {
     const blogs = await blogService.getAll();
     dispatch(setBlogs(blogs));
@@ -58,16 +52,15 @@ export const initalizeBlogs = () => {
 
 export const createNewBlog = (content) => {
   return async(dispatch) => {
-    try {
-      const newAnecdote = await blogService.postBlog(content);
+    // try {
+    const newAnecdote = await blogService.postBlog(content);
 
-      if((newAnecdote.message === 'Request failed with status code 400')){throw new Error;}
-      dispatch(createBlog(newAnecdote));
+    if((newAnecdote.message === 'Request failed with status code 400')){throw new Error;}
+    dispatch(createBlog(newAnecdote));
 
-    } catch (error) {
-      console.log('error en redycer');
-      throw (error);
-    }
+    // } catch (error) {
+    //   throw (error);
+    // }
   };
 };
 

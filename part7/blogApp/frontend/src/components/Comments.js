@@ -7,14 +7,12 @@ const Comments = ({ comments, blogId }) => {
 
   const dispatch = useDispatch();
 
-  console.log(comments);
   const commentInput = useField('text');
 
   const addComment = (e) => {
     e.preventDefault();
     if(commentInput.value.length < 1){return;}
     dispatch(commentBlog(commentInput.value, blogId));
-    // console.log();
   };
 
   return(

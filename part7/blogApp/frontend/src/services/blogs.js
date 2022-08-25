@@ -33,7 +33,6 @@ const postBlog = async (blogObj) => {
     const response = await axios.post(baseUrl, blogObj, config);
     return response.data;
   } catch (error) {
-    console.log('response');
     return error;
   }
 };

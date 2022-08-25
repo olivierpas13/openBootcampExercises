@@ -1,12 +1,13 @@
 const blogRouter = require('express').Router();
 const Blog = require('../models/blog');
+const { userExtractor } = require('../utils/middleware');
 
 blogRouter.get('/', async (request, response) => {
   const blogs = await Blog.find({}).populate('user', { blogs: 0 });
   response.json(blogs);
 });
 
-blogRouter.post('/', async (request, response, next) => {
+blogRouter.post('/', userExtractor, async (request, response, next) => {
   try {
     if (!request.body.likes) { request.body.likes = 0; }
     if (!request.body.title || !request.body.url) { return response.status(400).json({ error: 'Title and url required' }).end(); }
@@ -19,6 +20,7 @@ blogRouter.post('/', async (request, response, next) => {
         url: body.url,
         likes: body.likes,
         user: user._id,
+        comments: []
       },
     );
 
@@ -32,7 +34,17 @@ blogRouter.post('/', async (request, response, next) => {
 });
 /* eslint-enable */
 
-blogRouter.delete('/:id', async (request, response, next) => {
+blogRouter.get('/:id', async (request, response, next) => {
+  try {
+    const { id } = request.params;
+    const blog = await Blog.findById(id);
+    return response.json(blog);
+  } catch (error) {
+    return next(error);
+  }
+});
+
+blogRouter.delete('/:id', userExtractor, async (request, response, next) => {
   try {
     const { id } = request.params;
     const { user } = request;
@@ -54,11 +66,14 @@ blogRouter.put('/:id', async (request, response) => {
   if (!body.likes) { body.likes = 0; }
   if (!body.title && !body.url) { return response.status(400).end(); }
 
+  const blogToModify = await Blog.findById(id);
+
   const blog = {
     title: body.title,
-    author: user.username,
+    author: user ? user.username : body.author,
     url: body.url,
     likes: body.likes,
+    comments: blogToModify.comments.concat(body.comments),
   };
 
   try {

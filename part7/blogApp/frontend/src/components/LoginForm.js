@@ -1,16 +1,16 @@
-import { useState } from 'react';
 import loginService from '../services/login';
 import { useDispatch } from 'react-redux';
 import { login } from '../reducers/userReducer';
 import blogService from '../services/blogs';
 import { setNotification } from '../reducers/notificationReducer';
-// import { setNotification } from '..notificationReducer/reducers/notificationReducer';
-
+import  TextField  from '@mui/material/TextField';
+import  Button  from '@mui/material/Button';
+import { useField } from '../hooks';
 
 const LoginForm = () => {
 
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const username = useField('text');
+  const password = useField('password');
 
   const dispatch = useDispatch();
 
@@ -19,8 +19,8 @@ const LoginForm = () => {
 
     try {
       const loggedUser = await loginService.login({
-        username,
-        password
+        username: username.value,
+        password : password.value
       });
 
       dispatch(login(loggedUser)
@@ -32,10 +32,8 @@ const LoginForm = () => {
       blogService.setToken(loggedUser.token);
       dispatch(setNotification({
         message: `User ${loggedUser.username} logged in`,
-        type: 'message'
+        type: 'success'
       }, 5));
-      setPassword('');
-      setUsername('');
 
     } catch (error) {
       dispatch(setNotification({
@@ -49,21 +47,17 @@ const LoginForm = () => {
   return(
     <form>
       <p>Username</p>
-      <input
-        type="text"
-        value={username}
-        name= 'Username'
-        onChange={(e) => setUsername(e.target.value)}
+      <TextField
+        label= 'Username'
+        {...username}
+      />
+      <p>Password</p>
+      <TextField
+        label= 'Password'
+        {...password}
       />
       <br/><br/>
-      <p>Password</p>
-      <input
-        type="password"
-        value={password}
-        name= 'Password'
-        onChange={(e) => setPassword(e.target.value)} />
-      <br/><br/>
-      <button  onClick={(e) => handleLogin(e)}>Login</button>
+      <Button variant='outlined' color='secondary'  onClick={(e) => handleLogin(e)}>Login</Button>
     </form>
   );
 };

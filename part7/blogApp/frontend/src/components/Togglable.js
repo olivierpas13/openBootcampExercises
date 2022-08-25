@@ -1,6 +1,6 @@
 import { useState } from 'react';
+import  Button  from '@mui/material/Button';
 
-// const Togglable = ({children ,buttonLabel}) =>{
 const Togglable = ({ children ,buttonLabel }) => {
   const [visible, setVisible] = useState(false);
 
@@ -14,11 +14,13 @@ const Togglable = ({ children ,buttonLabel }) => {
   return (
     <div>
       <div style={hideWhenVisible}>
-        <button onClick={toggleVisibility}>{buttonLabel}</button>
+        <p>
+          <Button variant='outlined' color='primary' onClick={toggleVisibility}>{buttonLabel}</Button>
+        </p>
       </div>
       <div style={showWhenVisible}>
         {children}
-        <p><button onClick={toggleVisibility}>Cancel</button></p>
+        <p><Button variant='outlined' color='primary' onClick={toggleVisibility}>Cancel</Button></p>
       </div>
     </div>
   );

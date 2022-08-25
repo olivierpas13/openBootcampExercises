@@ -1,7 +1,8 @@
 import Blog from './Blog';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-
+import { CardGroup } from '../styles/Card';
+import { Card } from '../styles/Card';
 
 const Blogs = () => {
   const blogs =  useSelector(state => state.blogs);
@@ -10,14 +11,19 @@ const Blogs = () => {
     <div>
       <h1>Blogs</h1>
 
-      {blogs.map(blog => (
-        <Link to={`/blogs/${blog.id}`} key={blog.id}>
-          <Blog
-            blog={blog}
-          />
-        </Link>
+      <CardGroup>
 
-      ))}
+        {blogs.map(blog => (
+          <Card key={blog.id}>
+            <Link to={`/blogs/${blog.id}`} >
+              <Blog
+                blog={blog}
+              />
+            </Link>
+
+          </Card>
+        ))}
+      </CardGroup>
     </div>
   );
 };

@@ -7,7 +7,7 @@ const loginRouter = require('./controllers/login');
 const blogRouter = require('./controllers/blog');
 const userRouter = require('./controllers/user');
 const testingRouter = require('./controllers/testing');
-const { errorHandler, tokenExtractor, userExtractor } = require('./utils/middleware');
+const { errorHandler, tokenExtractor } = require('./utils/middleware');
 const logger = require('./utils/logger');
 
 const app = express();
@@ -28,7 +28,7 @@ app.use(express.json());
 app.use(tokenExtractor);
 app.use('/api/login', loginRouter);
 app.use('/api/users', userRouter);
-app.use('/api/blogs', userExtractor, blogRouter);
+app.use('/api/blogs', blogRouter);
 // if (process.env.NODE_ENV === 'test') {
 /* eslint-disable */
   /* eslint-enable */
