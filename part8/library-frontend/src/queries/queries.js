@@ -12,3 +12,16 @@ query AllAuthors {
 }
 
 `
+
+export const FIND_ALL_BOOKS = gql`
+
+query AllBooks {
+  allBooks {
+    title
+    published
+    author
+    id
+  }
+}
+
+`
