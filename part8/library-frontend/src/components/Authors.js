@@ -1,7 +1,14 @@
-import { useQuery } from "@apollo/client"
-import { FIND_ALL_AUTHORS } from "../queries/queries"
+import { useMutation, useQuery } from "@apollo/client"
+import { EDIT_AUTHOR, FIND_ALL_AUTHORS } from "../queries/queries"
+import { useField } from "../hooks/custom-hooks"
 
 const Authors = (props) => {
+
+  const {reset: resetName, ...name} = useField('text')
+  const {reset: resetSetBornTo, ...setBornTo} = useField('number')
+
+  const [editAuthor] = useMutation(EDIT_AUTHOR)
+
   const {data, error} = useQuery(FIND_ALL_AUTHORS)
   if (!props.show) {
     return null
@@ -12,6 +19,21 @@ const Authors = (props) => {
   const authors = data?.allAuthors
 
   console.log(data)
+
+const handleSubmit = (evt) =>{
+  evt.preventDefault()
+
+  if(error){return <span>Error: {error}</span>}
+
+  editAuthor({variables: {
+    name: name.value,
+    setBornTo: Number(setBornTo.value)
+  }})
+
+  resetName()
+  resetSetBornTo()
+
+}
 
 
   return (
@@ -33,6 +55,15 @@ const Authors = (props) => {
           ))}
         </tbody>
       </table>
+      <br/>
+      <form onSubmit={(e)=> handleSubmit(e)}>
+        <label for='nameInput' >Author name</label>
+        <input id="nameInput" {...name}/>
+        <br/>
+        <label for='bornInput' >Born</label>
+        <input id='bornInput'{...setBornTo} />
+        <button>Submit</button>
+      </form>
     </div>
   )
 }
