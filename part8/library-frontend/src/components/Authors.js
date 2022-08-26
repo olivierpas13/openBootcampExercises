@@ -1,15 +1,21 @@
 import { useMutation, useQuery } from "@apollo/client"
 import { EDIT_AUTHOR, FIND_ALL_AUTHORS } from "../queries/queries"
 import { useField } from "../hooks/custom-hooks"
+import Select from 'react-select'
+import { useState } from "react"
+
+
 
 const Authors = (props) => {
 
-  const {reset: resetName, ...name} = useField('text')
-  const {reset: resetSetBornTo, ...setBornTo} = useField('number')
-
-  const [editAuthor] = useMutation(EDIT_AUTHOR)
+  // const {reset: resetName, ...name} = useField('text')
 
   const {data, error} = useQuery(FIND_ALL_AUTHORS)
+  const {reset: resetSetBornTo, ...setBornTo} = useField('number')
+  const [editAuthor] = useMutation(EDIT_AUTHOR)
+
+  const [selectedOption, setSelectedOption] = useState(null)
+
   if (!props.show) {
     return null
   }
@@ -18,7 +24,12 @@ const Authors = (props) => {
 
   const authors = data?.allAuthors
 
-  console.log(data)
+
+  const nameOptions = authors?.map(author =>({
+    value: author.name,
+    label: author.name
+  }))
+
 
 const handleSubmit = (evt) =>{
   evt.preventDefault()
@@ -26,19 +37,18 @@ const handleSubmit = (evt) =>{
   if(error){return <span>Error: {error}</span>}
 
   editAuthor({variables: {
-    name: name.value,
+    name: selectedOption.value,
     setBornTo: Number(setBornTo.value)
   }})
-
-  resetName()
   resetSetBornTo()
+  // console.log(selectedOption.value)
 
 }
 
 
   return (
     <div>
-      <h2>authors</h2>
+      <h1>authors</h1>
       <table>
         <tbody>
           <tr>
@@ -47,7 +57,7 @@ const handleSubmit = (evt) =>{
             <th>books</th>
           </tr>
           {authors?.map((a) => (
-            <tr key={a.name}>
+            <tr key={a.id}>
               <td>{a.name}</td>
               <td>{a.born}</td>
               <td>{a.bookcount}</td>
@@ -57,10 +67,14 @@ const handleSubmit = (evt) =>{
       </table>
       <br/>
       <form onSubmit={(e)=> handleSubmit(e)}>
-        <label for='nameInput' >Author name</label>
-        <input id="nameInput" {...name}/>
+        <legend><h2> Set birthyear</h2></legend>
+        <Select
+        defaultValue={selectedOption}
+        onChange={setSelectedOption}
+        options={nameOptions}
+        />
         <br/>
-        <label for='bornInput' >Born</label>
+        <label >Born</label>
         <input id='bornInput'{...setBornTo} />
         <button>Submit</button>
       </form>
