@@ -1,5 +1,9 @@
 const { ApolloServer, gql } = require('apollo-server')
 const {v4: uuid} =  require ('uuid')
+const mongoose = require('mongoose')
+const Author = require ('./models/author')
+const Book = require ('./models/book')
+const db = require('./db')
 
 let authors = [
   {
@@ -91,12 +95,12 @@ let books = [
 
 const typeDefs = gql`
 
-  type Book{
-    title: String!
-    published: Int!
-    author: String!
-    id: ID!
-    genres: [String]!
+  type Book {
+  title: String!
+  published: Int!
+  author: Author!
+  genres: [String!]!
+  id: ID!
   }
 
   type Author{
@@ -109,7 +113,8 @@ const typeDefs = gql`
   type Query {
     bookCount: Int!
     authorCount: Int!
-    allBooks(author: String, genre: String): [Book]
+    allBooks(author: String,
+    genre: String): [Book]
     allAuthors: [Author]!
   }
 
@@ -124,55 +129,54 @@ const typeDefs = gql`
     editAuthor(
       name: String!
       setBornTo: Int!
-    ):AuthorS
+    ):Author
   }
 
 `
 
 const resolvers = {
   Query: {
-    bookCount: () =>{
-      return books.length
+    bookCount: async () =>{
+      // return books.length
+      return await Book.collection.countDocuments();
     },
-    authorCount: () => {
-      return authors.length
+    authorCount: async () => {
+      return await Author.collection.countDocuments();
     },
-    allBooks: (root, args) => {
-      if(args.author && args.genre){return books.filter(book => book.genres.includes(args.genre) && book.author === args.author)}
-      if(args.author){return books.filter(book=> book.author === args.author)}
-      if(args.genre){return books.filter(book=> book.genres.includes(args.genre))}
-      return books 
+    allBooks: async (root, args) => {
+      // if(args.author && args.genre){return books.filter(book => book.genres.includes(args.genre) && book.author === args.author)}
+      // if(args.author){return books.filter(book=> book.author === args.author)}
+      // if(args.genre){return books.filter(book=> book.genres.includes(args.genre))}
+      return Book.find({}).populate('author')
     },
-    allAuthors: () =>{
-      return authors
+    allAuthors: async () =>{
+      return Author.find({});
     }
   },
   Mutation:{
-    addBook: (root, args)=> {
-      const book = {...args, id: uuid()}
-      books = books.concat(book)
-      if(!authors.find(author=> author.name === book.author)){
-        authors = authors.concat({
-        name: book.author,
-        id: uuid()
-      })}
-      return book
+    addBook: async (root, args)=> {
+      const newAuthor = new Author({name: args.author})
+      const authorSaved = await newAuthor.save()
+      console.log(authorSaved)
+      const book = new Book ({
+        ...args,
+        author: authorSaved
+      })
+      return book.save()
     },
-    editAuthor: (root, args) => {
+    editAuthor: async (root, args) => {
       const {name, setBornTo} = args
-      const index = authors.findIndex(author=> author.name === name)
-      if(index === -1){return null}
-      const authorToEdit = authors[index]
 
-      const author = {...authorToEdit, born: setBornTo}
+      const author = await Author.findOne({name})
+      author.born = setBornTo  
+      return author.save()
 
-      authors[index] = author
-      return author  
        }
   },
   Author: {
-    bookcount: (root) => {
-      return books.filter(book=> book.author === root.name).length
+    bookcount: async (root) => {
+      const books = await Book.find({}).populate('author')
+      return books.filter(book=> book.author.name === root.name).length
     }
   }
 }
