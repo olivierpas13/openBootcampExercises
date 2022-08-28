@@ -1,26 +1,33 @@
 import { useQuery } from "@apollo/client"
 import { CURRENT_USER } from "../queries/queries"
-import { useApolloClient } from "@apollo/client"
+// import { useApolloClient } from "@apollo/client"
 import { FIND_ALL_BOOKS } from "../queries/queries"
 
 const Recommendation = ({show}) =>{
-    const client = useApolloClient()
+    // const client = useApolloClient()
     
     const {data} = useQuery(CURRENT_USER)
 
     const user = data?.me
 
-    const books = client.readQuery({
-        query: FIND_ALL_BOOKS,
-    })
+    const {data:booksData} = useQuery(FIND_ALL_BOOKS, {
+      variables:{
+      genre: user?.favouriteGenre 
+    }})
+
+
+    // const books = client.readQuery({
+    //     query: FIND_ALL_BOOKS,
+    // })
+    const books = booksData?.allBooks
 
     if (!show) {
         return null
       }
       
-      const booksToShow = books?.allBooks?.filter(book=> book.genres
-        .map(genre=> genre.toUpperCase().replace(/ /g, ""))
-        .includes(user.favouriteGenre.toUpperCase()))
+      // const booksToShow = books?.allBooks?.filter(book=> book.genres
+      //   .map(genre=> genre.toUpperCase().replace(/ /g, ""))
+      //   .includes(user.favouriteGenre.toUpperCase()))
 
     return(
         <div>
@@ -38,7 +45,7 @@ const Recommendation = ({show}) =>{
             <th>published</th>
           </tr>
           {
-          booksToShow?.map((a) => (
+          books?.map((a) => (
             <tr key={a.id}>
               <td>{a.title}</td>
               <td>{a.author.name}</td>
