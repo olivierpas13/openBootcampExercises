@@ -1,6 +1,7 @@
 import { useMutation } from '@apollo/client'
 import { useState } from 'react'
-import { CREATE_BOOK, FIND_ALL_AUTHORS, FIND_ALL_BOOKS } from '../queries/queries'
+import { FIND_ALL_AUTHORS, FIND_ALL_BOOKS } from '../queries/queries'
+import { CREATE_BOOK } from '../mutations/mutations'
 
 const NewBook = (props) => {
   const [title, setTitle] = useState('')
@@ -30,9 +31,9 @@ const NewBook = (props) => {
 
     createBook({variables: {
       title: title.length > 0 ? title: null,
-      author: author.length > 0 ? title: null,
+      author: author.length > 0 ? author: null,
       published: publishedDate,
-      genres: genres.length > 0 ? title: null
+      genres: genres.length > 0 ? genres: null
     }})
 
     setTitle('')

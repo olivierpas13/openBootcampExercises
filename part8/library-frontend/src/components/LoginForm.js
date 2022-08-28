@@ -1,13 +1,28 @@
+import { useEffect } from "react"
 import { useMutation } from "@apollo/client"
 import { useField } from "../hooks/custom-hooks"
-import { LOGIN } from "../queries/queries"
+import { LOGIN } from "../mutations/mutations"
 
-const LoginForm = ({show}) =>{
+const LoginForm = ({show, setToken}) =>{
     
     const {reset: resetName, ...name} = useField('text')
     const {reset: resetPassword, ...password} = useField('password')
-    const [login] = useMutation(LOGIN)
+
+    const [ login, result ] = useMutation(LOGIN, {
+        onError: (error) => {
+          return window.alert(error.graphQLErrors[0].message)
+        }
+      })
     
+      useEffect(() => {
+        if ( result.data ) {
+          const {value} = result.data.login
+          setToken(value)
+          window.localStorage.setItem('library-user-token', value)
+        }
+      }, [result.data]) // eslint-disable-line
+      
+      
     if(!show){
         return null
     }
@@ -38,6 +53,8 @@ const LoginForm = ({show}) =>{
                 Password
             </label>
             <input id="passwordInput" {...password} />
+            <br/>
+            <br/>
             <button>Login</button>
         </form>
         </div>

@@ -1,5 +1,6 @@
 import { useMutation, useQuery } from "@apollo/client"
-import { EDIT_AUTHOR, FIND_ALL_AUTHORS } from "../queries/queries"
+import { FIND_ALL_AUTHORS } from "../queries/queries"
+import { EDIT_AUTHOR } from "../mutations/mutations"
 import { useField } from "../hooks/custom-hooks"
 import Select from 'react-select'
 import { useState } from "react"
@@ -7,8 +8,6 @@ import { useState } from "react"
 
 
 const Authors = (props) => {
-
-  // const {reset: resetName, ...name} = useField('text')
 
   const {data, error} = useQuery(FIND_ALL_AUTHORS)
   const {reset: resetSetBornTo, ...setBornTo} = useField('number')
