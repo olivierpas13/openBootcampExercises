@@ -32,3 +32,15 @@ query AllBooks {
 
 `
 
+export const CURRENT_USER = gql`
+
+query Me {
+  me {
+    username
+    favouriteGenre
+    id
+  }
+}
+
+`
+
