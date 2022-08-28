@@ -15,8 +15,8 @@ query AllAuthors {
 
 export const FIND_ALL_BOOKS = gql`
 
-query AllBooks {
-  allBooks {
+query AllBooks($genre: String) {
+  allBooks(genre: $genre) {
     title
     published
     author {
@@ -43,4 +43,5 @@ query Me {
 }
 
 `
-
+// export const FIND_ALL_BOOKS_BY_GENRE = gql`
+// `

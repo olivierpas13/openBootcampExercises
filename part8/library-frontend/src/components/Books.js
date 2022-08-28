@@ -5,8 +5,11 @@ import {useState} from 'react'
 import GenderFilter from "./GenderFilter"
 
 const Books = (props) => {
-  const [filter, setFilter] = useState('ALL')
-  const {data, error, loading} = useQuery(FIND_ALL_BOOKS)
+  const [filter, setFilter] = useState(null)
+  const {data, error, loading} = useQuery(FIND_ALL_BOOKS, {
+    variables:{
+    genre: filter
+  }})
 
   if (!props.show) {
     return null
@@ -18,13 +21,23 @@ const Books = (props) => {
 
   let booksToShow = books
 
-  if(filter !== 'ALL'){
-    booksToShow = (books
-      .filter(book=> book.genres
-        .map(genre=> genre.toUpperCase().replace(/ /g, ""))
-        .includes(filter)))
+  // if(filter !== 'ALL'){
 
-  }
+    // const {data, error, loading} = useQuery(FIND_ALL_BOOKS())
+
+
+    // if(!loading){
+    //   booksToShow = data
+    // }
+
+    // booksToShow = (books
+    //   .filter(book=> book.genres
+    //     .map(genre=> genre.toUpperCase().replace(/ /g, ""))
+    //     .includes(filter)))
+  // }
+
+  console.log(booksToShow)
+
   return (
     <div>
       <h2>books</h2>
