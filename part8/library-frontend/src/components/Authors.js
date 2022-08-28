@@ -33,7 +33,7 @@ const Authors = (props) => {
 const handleSubmit = (evt) =>{
   evt.preventDefault()
 
-  if(error){return <span>Error: {error}</span>}
+  if(error){return <span>Error: {error.message}</span>}
 
   editAuthor({variables: {
     name: selectedOption.value,
