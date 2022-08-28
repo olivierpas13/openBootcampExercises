@@ -1,6 +1,5 @@
 import { useMutation } from '@apollo/client'
 import { useState } from 'react'
-// import { FIND_ALL_BOOKS } from '../queries/queries'
 import { CREATE_BOOK } from '../mutations/mutations'
 
 const NewBook = (props) => {
@@ -10,43 +9,12 @@ const NewBook = (props) => {
   const [genre, setGenre] = useState('')
   const [genres, setGenres] = useState([])
 
-  // refetchQueries: [
-  //   {query: FIND_ALL_BOOKS},
-  //   {query: FIND_ALL_AUTHORS}],
   const [ createBook ] = useMutation(CREATE_BOOK,{
     onError: (error) => {
       console.log(error)  
       return window.alert('Invalid input')
       },
-    // update:async (store, response) => {
-    //   const dataInStore = await store.readQuery({
-    //     query: FIND_ALL_BOOKS,
-    //     variables: {
-    //       genre: null,
-    //     },
-    //   })
-    //     store.writeQuery({
-    //       query: FIND_ALL_BOOKS,
-    //       variables:{
-    //         genre: null
-    //       },
-    //       data:{
-    //         ...dataInStore,
-    //         allBooks:[
-    //           ...dataInStore.allBooks,
-    //           response.data.addBook
-    //         ]
-    //       }
-    //     })
-    //   }
     })  
-      // update: (cache, response) => {
-      //   cache.updateQuery({ query: FIND_ALL_BOOKS }, ({ allBooks }) => {
-      //     return {
-      //       allBooks: allBooks.concat(response.data.addPerson),
-      //     }
-      //   })
-      // },
 
   if (!props.show) {
     return null

@@ -14,6 +14,7 @@ const App = () => {
   useSubscription(ADDED_BOOK,{
     onSubscriptionData: ({subscriptionData}) =>{
       const {addedBook} = (subscriptionData.data)
+      window.alert(`New book added, ${addedBook.title}`)
       const dataInStore = client.readQuery({
         query: FIND_ALL_BOOKS,
         variables: { genre: null}
@@ -27,9 +28,9 @@ const App = () => {
             ...dataInStore,
             allBooks:[
               ...dataInStore.allBooks,
-              addedBook            ]
-          }
-        })    }
+              addedBook
+            ]}
+        })}
   })
 
   const [page, setPage] = useState('authors')
