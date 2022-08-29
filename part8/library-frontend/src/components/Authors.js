@@ -57,7 +57,7 @@ const handleSubmit = (evt) =>{
             <tr key={a.id}>
               <td>{a.name}</td>
               <td>{a.born}</td>
-              <td>{a.bookcount}</td>
+              <td>{a.bookCount}</td>
             </tr>
           ))}
         </tbody>
