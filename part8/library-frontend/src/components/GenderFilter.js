@@ -5,7 +5,6 @@ const GenderFilter = ({books, setFilter}) =>{
     
     const listOfGenres = (genresFromBooks.flatMap(genre=>genre))
 
-    // let unique = [...new Set(listOfGenres.map(genre=> genre.toUpperCase().replace(/ /g, "")))]
     let unique = [...new Set(listOfGenres)]
 
     return(

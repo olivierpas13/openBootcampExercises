@@ -6,7 +6,7 @@ query AllAuthors {
   allAuthors {
     name
     born
-    bookcount
+    bookCount
     id
   }
 }
@@ -54,5 +54,3 @@ query Me {
 }
 
 `
-// export const FIND_ALL_BOOKS_BY_GENRE = gql`
-// `

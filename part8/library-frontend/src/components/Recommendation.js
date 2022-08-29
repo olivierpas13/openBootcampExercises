@@ -1,11 +1,8 @@
 import { useQuery } from "@apollo/client"
 import { CURRENT_USER } from "../queries/queries"
-// import { useApolloClient } from "@apollo/client"
 import { FIND_ALL_BOOKS } from "../queries/queries"
 
-const Recommendation = ({show}) =>{
-    // const client = useApolloClient()
-    
+const Recommendation = ({show}) =>{    
     const {data} = useQuery(CURRENT_USER)
 
     const user = data?.me
@@ -15,20 +12,12 @@ const Recommendation = ({show}) =>{
       genre: user?.favouriteGenre 
     }})
 
-
-    // const books = client.readQuery({
-    //     query: FIND_ALL_BOOKS,
-    // })
     const books = booksData?.allBooks
 
     if (!show) {
         return null
       }
       
-      // const booksToShow = books?.allBooks?.filter(book=> book.genres
-      //   .map(genre=> genre.toUpperCase().replace(/ /g, ""))
-      //   .includes(user.favouriteGenre.toUpperCase()))
-
     return(
         <div>
             <h2>

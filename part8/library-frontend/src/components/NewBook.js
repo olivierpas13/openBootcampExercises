@@ -11,7 +11,6 @@ const NewBook = (props) => {
 
   const [ createBook ] = useMutation(CREATE_BOOK,{
     onError: (error) => {
-      console.log(error)  
       return window.alert('Invalid input')
       },
     })  

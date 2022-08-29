@@ -20,24 +20,7 @@ const Books = (props) => {
   const books=data?.allBooks
 
   let booksToShow = books
-
-  // if(filter !== 'ALL'){
-
-    // const {data, error, loading} = useQuery(FIND_ALL_BOOKS())
-
-
-    // if(!loading){
-    //   booksToShow = data
-    // }
-
-    // booksToShow = (books
-    //   .filter(book=> book.genres
-    //     .map(genre=> genre.toUpperCase().replace(/ /g, ""))
-    //     .includes(filter)))
-  // }
-
-  console.log(booksToShow)
-
+  
   return (
     <div>
       <h2>books</h2>

@@ -45,8 +45,6 @@ const App = () => {
 
   }
 
-  console.log(token)
-
   return (
     <div>
       <div>

@@ -40,8 +40,6 @@ const handleSubmit = (evt) =>{
     setBornTo: Number(setBornTo.value)
   }})
   resetSetBornTo()
-  // console.log(selectedOption.value)
-
 }
 
 
